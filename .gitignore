@@ -14,6 +14,7 @@ logs
 *.log
 
 # Misc
+.pnpm-store
 .DS_Store
 .fleet
 .idea
