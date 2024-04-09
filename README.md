@@ -7,13 +7,12 @@ The frontend for the Student Management App.
 Make sure to install the dependencies:
 
 ```bash
-pnpm install
-```
-
-## Usage
-
-Start the development server on `http://localhost:3000`:
-
-```bash
+# For developement
+./scripts/start.sh dev
 pnpm dev
+
+# For production
+./scripts/start.sh prod
 ```
+
+Start the development server on `http://localhost:3000`.
