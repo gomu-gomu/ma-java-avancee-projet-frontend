@@ -16,3 +16,4 @@ pnpm dev
 ```
 
 Start the development server on `http://localhost:3000`.
+Tailwind preview: `http://localhost:3000/_tailwind/`.
