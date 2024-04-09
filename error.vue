@@ -11,13 +11,13 @@ defineProps({
     type: Object as PropType<NuxtError>,
     required: true
   }
-})
+});
 
 useHead({
   htmlAttrs: {
     lang: 'en'
   }
-})
+});
 </script>
 
 <template>
