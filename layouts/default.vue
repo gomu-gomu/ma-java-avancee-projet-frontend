@@ -1,83 +1,68 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const route = useRoute();
-const appConfig = useAppConfig();
 const { isHelpSlideoverOpen } = useDashboard();
 
-const links = [
+const links = computed(() => ([
   {
     id: 'home',
-    label: 'Home',
+    label: t('home.title'),
     icon: 'i-heroicons-home',
     to: '/',
     tooltip: {
-      text: 'Home',
+      text: t('home.title'),
       shortcuts: ['G', 'H']
     }
   },
   {
     id: 'inbox',
-    label: 'Inbox',
+    label: t('inbox.title'),
     icon: 'i-heroicons-inbox',
     to: '/inbox',
     badge: '4',
     tooltip: {
-      text: 'Inbox',
+      text: t('inbox.title'),
       shortcuts: ['G', 'I']
     }
   },
   {
     id: 'users',
-    label: 'Utilisateurs',
+    label: t('users.title'),
     icon: 'i-heroicons-user-group',
     to: '/users',
     tooltip: {
-      text: 'Utilisateurs',
+      text: t('users.title'),
       shortcuts: ['G', 'U']
     }
   },
   {
     id: 'settings',
-    label: 'Paramètres',
+    label: t('settings.title'),
     to: '/settings',
     icon: 'i-heroicons-cog-8-tooth',
-    children: [{
-      label: 'Paramètres',
-      to: '/settings',
-      exact: true
-    },
-    {
-      label: 'Members',
-      to: '/settings/members'
-    },
-    {
-      label: 'Notifications',
-      to: '/settings/notifications'
-    }],
+    children: [
+      {
+        label: t('settings.title'),
+        to: '/settings',
+        exact: true
+      },
+      {
+        label: t('settings.tabs.notifications'),
+        to: '/settings/notifications'
+      }
+    ],
     tooltip: {
-      text: 'Settings',
+      text: t('settings.title'),
       shortcuts: ['G', 'S']
     }
   }
-];
-
-const footerLinks = [
-  {
-    label: 'Invite people',
-    icon: 'i-heroicons-plus',
-    to: '/settings/members'
-  },
-  {
-    label: 'Help & Support',
-    icon: 'i-heroicons-question-mark-circle',
-    click: () => isHelpSlideoverOpen.value = true
-  }
-];
+]));
 
 const groups = [
   {
     key: 'links',
     label: 'Go to',
-    commands: links.map(link => ({ ...link, shortcuts: link.tooltip?.shortcuts }))
+    commands: links.value.map(link => ({ ...link, shortcuts: link.tooltip?.shortcuts }))
   },
   {
     key: 'code',
@@ -95,8 +80,6 @@ const groups = [
   }
 ];
 
-const defaultColors = ref(['green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet'].map(color => ({ label: color, chip: color, click: () => appConfig.ui.primary = color })));
-const colors = computed(() => defaultColors.value.map(color => ({ ...color, active: appConfig.ui.primary === color.label })));
 </script>
 
 <template>
@@ -104,27 +87,21 @@ const colors = computed(() => defaultColors.value.map(color => ({ ...color, acti
     <UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
       <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
         <template #left>
-          <TeamsDropdown />
+          <div class="head">
+            <img class="head__logo" src="~/public/imgs/logo.png" alt="The app's logo" />
+            <h1 class="head__title">Student Management</h1>
+          </div>
         </template>
       </UDashboardNavbar>
 
       <UDashboardSidebar>
         <template #header>
-          <UDashboardSearchButton />
+          <UDashboardSearchButton :label="$t('common.search') + '...'" />
         </template>
 
         <UDashboardSidebarLinks :links="links" />
-
-        <UDivider />
-
-        <UDashboardSidebarLinks :links="[{ label: 'Colors', draggable: true, children: colors }]"
-          @update:links="colors => defaultColors = colors" />
-
-        <div class="flex-1" />
-
-        <UDashboardSidebarLinks :links="footerLinks" />
-
         <UDivider class="sticky bottom-0" />
+        <div class="flex-1" />
 
         <template #footer>
           <!-- ~/components/UserDropdown.vue -->
@@ -134,14 +111,21 @@ const colors = computed(() => defaultColors.value.map(color => ({ ...color, acti
     </UDashboardPanel>
 
     <slot />
-
-    <!-- ~/components/HelpSlideover.vue -->
-    <HelpSlideover />
-    <!-- ~/components/NotificationsSlideover.vue -->
-    <NotificationsSlideover />
-
-    <ClientOnly>
-      <LazyUDashboardSearch :groups="groups" />
-    </ClientOnly>
   </UDashboardLayout>
 </template>
+
+<style scoped lang="scss">
+.head {
+  display: flex;
+  align-items: center;
+
+  &__logo {
+    width: 50px;
+  }
+
+  &__title {
+    margin-left: 10px;
+    font-weight: bold;
+  }
+}
+</style>

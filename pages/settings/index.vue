@@ -51,7 +51,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
 
 <template>
   <UDashboardPanelContent class="pb-24">
-    <UDashboardSection title="Theme" description="Customize the look and feel of your dashboard.">
+    <UDashboardSection :title="$t('settings.theme.title')" :description="$t('settings.theme.description')">
       <template #links>
         <UColorModeSelect color="gray" />
       </template>
