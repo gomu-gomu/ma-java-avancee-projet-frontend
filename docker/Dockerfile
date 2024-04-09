@@ -8,7 +8,7 @@ RUN pnpm install
 COPY . .
 RUN pnpm build
 
-FROM node:16-slim
+FROM node:20-slim
 WORKDIR /app
 
 COPY --from=builder /app/.nuxt ./.nuxt

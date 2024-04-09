@@ -24,7 +24,7 @@ fi
 docker build -f $dockerfile -t $image .
 
 if [ "$mode" = "dev" ]; then
-  docker run -it --rm -v "$(pwd)":/app -p 3000:3000 $image
+  docker run -it --rm --network=docker_default -v "$(pwd)":/app -p 3000:3000 $image
 elif [ "$mode" = "prod" ]; then
   docker run -it --rm -p 3000:3000 $image
 fi
