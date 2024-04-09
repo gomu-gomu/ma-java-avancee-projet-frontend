@@ -1,11 +1,3 @@
-<script setup lang="ts">
-const { data } = await useFetch('/api/users');
-</script>
-
 <template>
-  <h1>Users</h1>
-
-  <ul>
-    <li v-for="user in data">{{ user.email }}</li>
-  </ul>
+  <h1>Student Management</h1>
 </template>
