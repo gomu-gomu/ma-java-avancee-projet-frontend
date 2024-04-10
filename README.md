@@ -15,5 +15,9 @@ pnpm dev
 ./scripts/start.sh prod
 ```
 
-Start the development server on `http://localhost:3000`.
-Tailwind preview: `http://localhost:3000/_tailwind/`.
+## Endpoints
+
+| Name         | URL                                                  | Description                      |
+|--------------|------------------------------------------------------|----------------------------------|
+| **App**      | http://localhost:3000                                | Access to the web app            |
+| **Design**   | http://localhost:3000/_tailwind                      | Access to the Tailwind inspector |
