@@ -1,0 +1,51 @@
+{
+  "common": {
+    "search": "Recherche"
+  },
+  "home": {
+    "title": "Tableau de bord"
+  },
+  "users": {
+    "title": "Utilisateurs"
+  },
+  "inbox": {
+    "title": "Boîte de Réception"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "theme": {
+      "title": "Thème",
+      "description": "Personnalisez l'apparence de votre tableau de bord.",
+      "options": {
+        "system": "Système",
+        "light": "Léger",
+        "dark": "Sombre"
+      }
+    },
+    "language": {
+      "title": "Langue",
+      "description": "Change la langue d'affichage de l'application.",
+      "options": {
+        "en": "Anglais",
+        "fr": "Français",
+        "ar": "Arabe"
+      }
+    },
+    "notifications": {
+      "title": "Canaux de notification",
+      "description": "Où pouvons-nous vous avertir ?",
+      "email": {
+        "title": "E-mail",
+        "description": "Recevez un résumé quotidien par e-mail."
+      },
+      "desktop": {
+        "title": "Bureau",
+        "description": "Recevez des notifications sur le bureau."
+      }
+    },
+    "tabs": {
+      "general": "Générale",
+      "notifications": "Notifications"
+    }
+  }
+}
