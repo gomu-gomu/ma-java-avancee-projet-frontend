@@ -1,7 +1,15 @@
 <script setup lang="ts">
-const { t } = useI18n();
 const route = useRoute();
-const { isHelpSlideoverOpen } = useDashboard();
+const { t, locale } = useI18n();
+
+watch(locale, (language: string) => {
+  useHead({
+    htmlAttrs: {
+      lang: language,
+      dir: language === 'ar' ? 'rtl' : 'ltr'
+    }
+  });
+});
 
 const links = computed(() => ([
   {

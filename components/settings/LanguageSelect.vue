@@ -3,12 +3,11 @@ defineOptions({
   inheritAttrs: false
 });
 
-const colorMode = useColorMode();
 const { t, setLocale, locale } = useI18n();
-
 const options = computed(() => [
-  { label: t('settings.language.options.en'), value: 'en', icon: 'i-heroicons-language' },
-  { label: t('settings.language.options.fr'), value: 'fr', icon: 'i-heroicons-language' }
+  { label: t('settings.language.options.ar'), value: 'ar', icon: 'i-heroicons-language' },
+  { label: t('settings.language.options.fr'), value: 'fr', icon: 'i-heroicons-language' },
+  { label: t('settings.language.options.en'), value: 'en', icon: 'i-heroicons-language' }
 ]);
 
 const language = computed({

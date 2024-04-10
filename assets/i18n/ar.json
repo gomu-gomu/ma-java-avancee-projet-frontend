@@ -1,0 +1,51 @@
+{
+  "common": {
+    "search": "بحث"
+  },
+  "home": {
+    "title": "الصفحة الرئيسية"
+  },
+  "users": {
+    "title": "المستخدمين"
+  },
+  "inbox": {
+    "title": "صندوق الاستقبال"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "theme": {
+      "title": "ألوان الموقع",
+      "description": "تخصيص مظهر صفحاتك",
+      "options": {
+        "system": "نظام",
+        "light": "ضوء",
+        "dark": "مظلم"
+      }
+    },
+    "language": {
+      "title": "اللغة",
+      "description": "يغير لغة العرض الخاصة بالتطبيق",
+      "options": {
+        "en": "الإنجليزية",
+        "fr": "الفرنسية",
+        "ar": "العربية"
+      }
+    },
+    "notifications": {
+      "title": "قنوات التنبيه",
+      "description": "أين يمكننا إعلامك؟",
+      "email": {
+        "title": "البريد الإلكتروني",
+        "description": "احصل على ملخص يومي عبر البريد الإلكتروني"
+      },
+      "desktop": {
+        "title": "الجهاز",
+        "description":"تلقي الإخطارات على الجهاز"
+      }
+    },
+    "tabs": {
+      "general": "عامة",
+      "notifications": "إشعارات"
+    }
+  }
+}

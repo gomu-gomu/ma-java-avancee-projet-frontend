@@ -3,9 +3,10 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: 'Student Management',
-      meta: [
-        { name: 'description', content: 'The frontend for student management web app.' }
-      ]
+      meta: [{ name: 'description', content: 'The frontend for student management web app.' }],
+      htmlAttrs: {
+        dir: 'ltr'
+      }
     }
   },
   extends: [process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro'],
