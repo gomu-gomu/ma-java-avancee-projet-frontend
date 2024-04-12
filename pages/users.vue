@@ -43,6 +43,7 @@ function getColor(type: UserType): string {
 }
 
 const q = ref('');
+const page = ref(1);
 const isNewUserModalOpen = ref(false);
 const selected = ref<Array<TUIUser>>([]);
 const selectedColumns = ref(defaultColumns);
@@ -53,19 +54,14 @@ const selectedTypes = ref<Array<{ value: UserType, label: string }>>([]);
 const columns = computed(() => defaultColumns.filter((column) => selectedColumns.value.includes(column)));
 const query = computed(() => ({
   q: q.value,
+  page: page.value,
   sort: sort.value.column,
   order: sort.value.direction,
   types: selectedTypes.value.map(e => e.value)
 }));
 
 const { data, pending } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
-const defaultTypes = data.value?.content.reduce((acc, user) => {
-  if (!acc.find(e => e.value === user.type)) {
-    acc.push({ value: user.type, label: getType(user.type) });
-  }
-
-  return acc;
-}, [] as Array<{ value: UserType, label: string }>);
+const defaultTypes = Object.keys(UserType).filter(e => isNaN(Number(e))).map(e => ({ value: UserType[e], label: e }));
 
 function onSelect(row: TUIUser) {
   const index = selected.value.findIndex((item) => item.id === row.id);
@@ -136,7 +132,12 @@ defineShortcuts({
         <template #type-data="{ row }">
           <UBadge :label="getType(row.type)" :color="getColor(row.type)" variant="subtle" class="capitalize" />
         </template>
+
       </UTable>
+
+      <div class="flex justify-center px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+        <UPagination v-model="page" :page-count="data.size" :total="data.totalElements" />
+      </div>
     </UDashboardPanel>
   </UDashboardPage>
 </template>

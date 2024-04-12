@@ -28,10 +28,10 @@ function buildUrl(endPoint: string, params: object): string {
 }
 
 export default eventHandler(async (event) => {
-  const { q, types, sort, order } = getQuery(event) as { q?: string, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
-  const page = 0;
+  const { q, page, types, sort, order } = getQuery(event) as { q?: string, page: number, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
 
-  const url = buildUrl(`user/page/${page}`, { q, types, sort, order });
+  const pageNumber = Math.max(0, page - 1);
+  const url = buildUrl(`user/page/${pageNumber}`, { q, types, sort, order });
   const users = await $fetch<TPage<Array<TUIUser>>>(url);
 
   return {
