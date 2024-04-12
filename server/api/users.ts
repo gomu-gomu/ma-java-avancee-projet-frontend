@@ -31,7 +31,7 @@ export default eventHandler(async (event) => {
   const { q, types, sort, order } = getQuery(event) as { q?: string, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
   const page = 0;
 
-  const url = buildUrl(`user/page/${page}`, { types, sort, order });
+  const url = buildUrl(`user/page/${page}`, { q, types, sort, order });
   console.log({ url });
   const users = await $fetch<TPage<Array<TUIUser>>>(url);
 
