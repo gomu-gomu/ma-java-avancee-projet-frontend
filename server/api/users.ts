@@ -32,15 +32,17 @@ export default eventHandler(async (event) => {
   const page = 0;
 
   const url = buildUrl(`user/page/${page}`, { q, types, sort, order });
-  console.log({ url });
   const users = await $fetch<TPage<Array<TUIUser>>>(url);
 
-  return users.content
-    .map((e, i) => ({
-      id: i + 1,
-      name: 'TODO',
-      type: e.type,
-      email: e.email,
-      avatar: { src: generateAvatar(e.id) },
-    }))
+  return {
+    ...users,
+    content: users.content
+      .map((e, i) => ({
+        id: i + 1,
+        name: 'TODO',
+        type: e.type,
+        email: e.email,
+        avatar: { src: generateAvatar(e.id) },
+      }))
+  };
 });

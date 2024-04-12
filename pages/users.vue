@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { TUIUser } from '~/types';
+import type { TPage } from '~/types/page';
 import { UserType } from '~/types/user-type';
 
 
@@ -57,9 +58,8 @@ const query = computed(() => ({
   types: selectedTypes.value.map(e => e.value)
 }));
 
-const { data: users, pending } = await useFetch<Array<TUIUser>>('/api/users', { query, default: () => [] });
-
-const defaultTypes = users.value.reduce((acc, user) => {
+const { data, pending } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
+const defaultTypes = data.value?.content.reduce((acc, user) => {
   if (!acc.find(e => e.value === user.type)) {
     acc.push({ value: user.type, label: getType(user.type) });
   }
@@ -87,7 +87,7 @@ defineShortcuts({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar :title="$t('users.title')" :badge="users.length">
+      <UDashboardNavbar :title="$t('users.title')" :badge="data.content.length + ' / ' + data.totalElements">
         <template #right>
           <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off"
             placeholder="Filtrer les utilisateurs..." class="hidden lg:block" @keydown.esc="$event.target.blur()">
@@ -123,7 +123,7 @@ defineShortcuts({
         <UsersForm @close="isNewUserModalOpen = false" />
       </UDashboardModal>
 
-      <UTable v-model="selected" v-model:sort="sort" :rows="users" :columns="columns" :loading="pending"
+      <UTable v-model="selected" v-model:sort="sort" :rows="data.content" :columns="columns" :loading="pending"
         sort-mode="manual" class="w-full" :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }" @select="onSelect">
         <template #name-data="{ row }">
           <div class="flex items-center gap-3">
