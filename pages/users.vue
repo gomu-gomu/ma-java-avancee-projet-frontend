@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { format } from 'date-fns';
 import type { TUIUser } from '~/types';
 import type { TPage } from '~/types/page';
 import { UserType } from '~/types/user-type';
@@ -7,11 +8,6 @@ import { UserType } from '~/types/user-type';
 
 const defaultColumns = [
   {
-    key: 'name',
-    label: 'Name',
-    sortable: true
-  },
-  {
     key: 'email',
     label: 'Email',
     sortable: true
@@ -19,6 +15,16 @@ const defaultColumns = [
   {
     key: 'type',
     label: 'Type'
+  },
+  {
+    key: 'createdAt',
+    label: 'Created',
+    sortable: true
+  },
+  {
+    key: 'updatedAt',
+    label: 'Updated',
+    sortable: true
   }
 ];
 
@@ -121,11 +127,10 @@ defineShortcuts({
 
       <UTable v-model="selected" v-model:sort="sort" :rows="data.content" :columns="columns" :loading="pending"
         sort-mode="manual" class="w-full" :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }" @select="onSelect">
-        <template #name-data="{ row }">
+        <template #email-data="{ row }">
           <div class="flex items-center gap-3">
-            <UAvatar v-bind="row.avatar" :alt="row.name" size="xs" />
-
-            <span class="text-gray-900 dark:text-white font-medium">{{ row.name }}</span>
+            <UAvatar v-bind="row.avatar" :alt="row.email" size="xs" />
+            <span class="text-gray-900 dark:text-white font-medium">{{ row.email }}</span>
           </div>
         </template>
 
@@ -133,6 +138,13 @@ defineShortcuts({
           <UBadge :label="getType(row.type)" :color="getColor(row.type)" variant="subtle" class="capitalize" />
         </template>
 
+        <template #createdAt-data="{ row }">
+          {{ format(new Date(row.createdAt), 'yyyy-MM-dd')  }}
+        </template>
+        
+        <template #updatedAt-data="{ row }">
+          {{ format(new Date(row.updatedAt), 'yyyy-MM-dd')  }}
+        </template>
       </UTable>
 
       <div class="flex justify-center px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">

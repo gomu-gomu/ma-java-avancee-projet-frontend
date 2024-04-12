@@ -42,6 +42,8 @@ export default eventHandler(async (event) => {
         name: 'TODO',
         type: e.type,
         email: e.email,
+        createdAt: e.createdAt,
+        updatedAt: e.updatedAt,
         avatar: { src: generateAvatar(e.id) },
       }))
   };
