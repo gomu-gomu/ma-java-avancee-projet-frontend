@@ -14,13 +14,17 @@ function generateAvatar(seed: string): string {
   return avatar.toDataUriSync();
 }
 
-function buildUrl(endPoint: string, params: object): string {
+function buildUrl(endPoint: string, params?: object): string {
   const queryParams = [];
-  let url = `${config.api}/${endPoint}?`;
+  let url = `${config.api}/${endPoint}`;
 
-  for (const [key, value] of Object.entries(params)) {
-    if (value) {
-      queryParams.push(`${key}=${value}`);
+  if (params) {
+    url += '?';
+
+    for (const [key, value] of Object.entries(params)) {
+      if (value) {
+        queryParams.push(`${key}=${value}`);
+      }
     }
   }
 
@@ -28,23 +32,36 @@ function buildUrl(endPoint: string, params: object): string {
 }
 
 export default eventHandler(async (event) => {
-  const { q, page, types, sort, order } = getQuery(event) as { q?: string, page: number, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
+  switch (event.method) {
+    case 'GET': {
+      const { q, page, types, sort, order } = getQuery(event) as { q?: string, page: number, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
 
-  const pageNumber = Math.max(0, page - 1);
-  const url = buildUrl(`user/page/${pageNumber}`, { q, types, sort, order });
-  const users = await $fetch<TPage<Array<TUIUser>>>(url);
+      const pageNumber = Math.max(0, page - 1);
+      const url = buildUrl(`user/page/${pageNumber}`, { q, types, sort, order });
+      const users = await $fetch<TPage<Array<TUIUser>>>(url);
 
-  return {
-    ...users,
-    content: users.content
-      .map((e, i) => ({
-        id: i + 1,
-        name: 'TODO',
-        type: e.type,
-        email: e.email,
-        createdAt: e.createdAt,
-        updatedAt: e.updatedAt,
-        avatar: { src: generateAvatar(e.id) },
-      }))
-  };
+      return {
+        ...users,
+        content: users.content
+          .map((e, i) => ({
+            id: e.id,
+            type: e.type,
+            email: e.email,
+            password: e.email,
+            createdAt: e.createdAt,
+            updatedAt: e.updatedAt,
+            avatar: { src: generateAvatar(e.id) },
+          }))
+      };
+    }
+
+    case 'DELETE': {
+      const user = await readBody(event);
+      const url = buildUrl(`user`);
+      console.log({ user });
+      const response = await $fetch<boolean>(url, { method: 'DELETE', body: user });
+
+      console.log('deleting', { user, response });
+    }
+  }
 });

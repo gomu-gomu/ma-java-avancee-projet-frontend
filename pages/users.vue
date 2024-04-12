@@ -2,6 +2,7 @@
 import { format } from 'date-fns';
 import type { TUIUser } from '~/types';
 import type { TPage } from '~/types/page';
+import type { TUser } from '~/types/user';
 import { UserType } from '~/types/user-type';
 
 
@@ -69,13 +70,19 @@ const query = computed(() => ({
 const { data, pending } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
 const defaultTypes = Object.keys(UserType).filter(e => isNaN(Number(e))).map(e => ({ value: UserType[e], label: t(`users.types.${e.toLowerCase()}`) }));
 
-function onSelect(row: TUIUser) {
-  const index = selected.value.findIndex((item) => item.id === row.id);
+async function onDelete(): Promise<void> {
+  for (const user of selected.value) {
+    const userObj = {
+      id: user.id,
+      type: user.type,
+      email: user.email,
+      password: user.password,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    } as TUser;
 
-  if (index === -1) {
-    selected.value.push(row);
-  } else {
-    selected.value.splice(index, 1);
+    const { data } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { method: 'DELETE', body: userObj });
+    console.log({ data });
   }
 }
 
@@ -89,7 +96,7 @@ defineShortcuts({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar :title="$t('users.title')" :badge="data.content.length + ' / ' + data.totalElements">
+      <UDashboardNavbar :title="$t('users.title')" :badge="data?.content.length + ' / ' + data?.totalElements">
         <template #right>
           <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off" :placeholder="$t('users.filter')"
             class="hidden lg:block" @keydown.esc="$event.target.blur()">
@@ -100,6 +107,9 @@ defineShortcuts({
 
           <UButton :label="$t('users.new')" trailing-icon="i-heroicons-plus" color="gray"
             @click="isNewUserModalOpen = true" />
+
+          <UButton v-if="selected.length > 0" :label="$t('users.delete')" trailing-icon="i-heroicons-trash" color="red"
+            @click="onDelete" />
         </template>
       </UDashboardNavbar>
 
@@ -125,8 +135,8 @@ defineShortcuts({
         <UsersForm @close="isNewUserModalOpen = false" />
       </UDashboardModal>
 
-      <UTable v-model="selected" v-model:sort="sort" :rows="data.content" :columns="columns" :loading="pending"
-        sort-mode="manual" class="w-full" :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }" @select="onSelect">
+      <UTable v-model="selected" v-model:sort="sort" :rows="data?.content" :columns="columns" :loading="pending"
+        sort-mode="manual" class="w-full" :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }">
         <template #email-data="{ row }">
           <div class="flex items-center gap-3">
             <UAvatar v-bind="row.avatar" :alt="row.email" size="xs" />
@@ -148,7 +158,7 @@ defineShortcuts({
       </UTable>
 
       <div class="flex justify-center px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-        <UPagination v-model="page" :page-count="data.size" :total="data.totalElements" />
+        <UPagination v-model="page" :page-count="data?.size" :total="data?.totalElements" />
       </div>
     </UDashboardPanel>
   </UDashboardPage>
