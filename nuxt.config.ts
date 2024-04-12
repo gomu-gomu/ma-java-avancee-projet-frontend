@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     safelistColors: ['primary', 'red', 'orange', 'green']
   },
   devtools: {
-    enabled: true
+    enabled: false
   },
   i18n: {
     vueI18n: './i18n.config.ts'
