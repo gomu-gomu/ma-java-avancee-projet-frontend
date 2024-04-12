@@ -1,20 +1,16 @@
-import type { Avatar } from '#ui/types'
+import type { TUser } from './user';
+import type { Avatar } from '#ui/types';
 
-export type UserStatus = 'subscribed' | 'unsubscribed' | 'bounced'
+export type UserType = 'subscribed' | 'unsubscribed' | 'bounced';
 
-export interface User {
-  id: number
-  name: string
-  email: string
+export type TUIUser = {
   avatar?: Avatar
-  status: UserStatus
-  location: string
-}
+} & TUser;
 
 export interface Mail {
   id: number
   unread?: boolean
-  from: User
+  from: TUser
   subject: string
   body: string
   date: string
@@ -30,7 +26,7 @@ export interface Member {
 export interface Notification {
   id: number
   unread?: boolean
-  sender: User
+  sender: TUser
   body: string
   date: string
 }
