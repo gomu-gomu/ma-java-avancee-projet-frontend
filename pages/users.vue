@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { TUIUser } from '~/types';
+import { UserType } from '~/types/user-type';
 
 const defaultColumns = [
   {
@@ -13,30 +14,56 @@ const defaultColumns = [
     sortable: true
   },
   {
-    key: 'status',
-    label: 'Status'
+    key: 'type',
+    label: 'Type'
   }
 ];
 
+function getType(type: UserType): string {
+  switch (type) {
+    case UserType.Admin: return 'Admin';
+    case UserType.Teacher: return 'Teacher';
+    case UserType.Parent: return 'Parent';
+    case UserType.Student: return 'Student';
+    default: return 'Unknown';
+  }
+}
+
+function getColor(type: UserType): string {
+  switch (type) {
+    case UserType.Admin: return 'red';
+    case UserType.Teacher: return 'orange';
+    case UserType.Parent: return 'green';
+    case UserType.Student: return 'blue';
+    default: return 'Unknown';
+  }
+}
+
 const q = ref('');
+const isNewUserModalOpen = ref(false);
 const selected = ref<Array<TUIUser>>([]);
 const selectedColumns = ref(defaultColumns);
-const selectedTypes = ref([]);
-const sort = ref({ column: 'id', direction: 'asc' as const });
 const input = ref<{ input: HTMLInputElement }>();
-const isNewUserModalOpen = ref(false);
+const sort = ref({ column: 'createdAt', direction: 'asc' as const });
+const selectedTypes = ref<Array<{ value: UserType, label: string }>>([]);
 
 const columns = computed(() => defaultColumns.filter((column) => selectedColumns.value.includes(column)));
-const query = computed(() => ({ q: q.value, statuses: selectedTypes.value, sort: sort.value.column, order: sort.value.direction }));
+const query = computed(() => ({
+  q: q.value,
+  sort: sort.value.column,
+  order: sort.value.direction,
+  types: selectedTypes.value.map(e => e.value)
+}));
+
 const { data: users, pending } = await useFetch<Array<TUIUser>>('/api/users', { query, default: () => [] });
 
 const defaultTypes = users.value.reduce((acc, user) => {
-  if (!acc.includes(user.type)) {
-    acc.push(user.type);
+  if (!acc.find(e => e.value === user.type)) {
+    acc.push({ value: user.type, label: getType(user.type) });
   }
 
   return acc;
-}, [] as string[]);
+}, [] as Array<{ value: UserType, label: string }>);
 
 function onSelect(row: TUIUser) {
   const index = selected.value.findIndex((item) => item.id === row.id);
@@ -58,7 +85,7 @@ defineShortcuts({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar :title="$t('welcome')" :badge="users.length">
+      <UDashboardNavbar :title="$t('users.title')" :badge="users.length">
         <template #right>
           <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off"
             placeholder="Filtrer les utilisateurs..." class="hidden lg:block" @keydown.esc="$event.target.blur()">
@@ -74,7 +101,7 @@ defineShortcuts({
 
       <UDashboardToolbar>
         <template #left>
-          <USelectMenu v-model="selectedTypes" icon="i-heroicons-check-circle" placeholder="Status" multiple
+          <USelectMenu v-model="selectedTypes" icon="i-heroicons-check-circle" placeholder="Type" multiple
             :options="defaultTypes" :ui-menu="{ option: { base: 'capitalize' } }" />
         </template>
 
@@ -104,10 +131,8 @@ defineShortcuts({
           </div>
         </template>
 
-        <template #status-data="{ row }">
-          <UBadge :label="row.status"
-            :color="row.status === 'subscribed' ? 'green' : row.status === 'bounced' ? 'orange' : 'red'"
-            variant="subtle" class="capitalize" />
+        <template #type-data="{ row }">
+          <UBadge :label="getType(row.type)" :color="getColor(row.type)" variant="subtle" class="capitalize" />
         </template>
       </UTable>
     </UDashboardPanel>

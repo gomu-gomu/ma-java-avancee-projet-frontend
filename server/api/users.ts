@@ -1,7 +1,9 @@
 import { createAvatar } from '@dicebear/core';
 import { identicon } from '@dicebear/collection';
 
-import type { TUser } from '~/types/user';
+import type { TUIUser } from '~/types';
+import type { TPage } from '~/types/page';
+import type { UserType } from '~/types/user-type';
 
 
 
@@ -12,30 +14,33 @@ function generateAvatar(seed: string): string {
   return avatar.toDataUriSync();
 }
 
+function buildUrl(endPoint: string, params: object): string {
+  const queryParams = [];
+  let url = `${config.api}/${endPoint}?`;
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value) {
+      queryParams.push(`${key}=${value}`);
+    }
+  }
+
+  return url + queryParams.join('&');
+}
+
 export default eventHandler(async (event) => {
-  const { q, sort, order } = getQuery(event) as { q?: string, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
-  const users = await $fetch<Array<TUser>>(`${config.api}/user`);
-  console.log('fetched', users.length);
-  return users
-    .filter((_, i) => i < 10)
+  const { q, types, sort, order } = getQuery(event) as { q?: string, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
+  const page = 0;
+
+  const url = buildUrl(`user/page/${page}`, { types, sort, order });
+  console.log({ url });
+  const users = await $fetch<TPage<Array<TUIUser>>>(url);
+
+  return users.content
     .map((e, i) => ({
       id: i + 1,
       name: 'TODO',
-      status: e.type,
+      type: e.type,
       email: e.email,
       avatar: { src: generateAvatar(e.id) },
     }))
-    .filter((user) => {
-      if (!q) return true;
-      return user.name.search(new RegExp(q, 'i')) !== -1 || user.email.search(new RegExp(q, 'i')) !== -1;
-    }).sort((a, b) => {
-      if (!sort) return 0
-
-      const aValue = a[sort]
-      const bValue = b[sort]
-
-      if (aValue < bValue) return order === 'asc' ? -1 : 1
-      if (aValue > bValue) return order === 'asc' ? 1 : -1
-      return 0
-    })
 });
