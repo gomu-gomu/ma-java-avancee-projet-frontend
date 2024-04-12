@@ -6,7 +6,22 @@
     "title": "Tableau de bord"
   },
   "users": {
-    "title": "Utilisateurs"
+    "title": "Utilisateurs",
+    "description": "Ajouter un nouvel utilisateur",
+    "new": "Nouvel Utilisateur",
+    "filter": "Filtrer les utilisateurs...",
+    "columns": "Colonnes",
+    "email": "E-mail",
+    "type": "Type",
+    "created": "Créé",
+    "updated": "Dernière Mise à Jour",
+    "types": {
+      "admin": "Administrateur",
+      "teacher": "Professeur",
+      "parent": "Parent",
+      "student": "Étudiant",
+      "unknown": "Inconnu"
+    }
   },
   "inbox": {
     "title": "Boîte de Réception"

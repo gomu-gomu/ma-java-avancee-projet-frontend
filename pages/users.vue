@@ -5,36 +5,36 @@ import type { TPage } from '~/types/page';
 import { UserType } from '~/types/user-type';
 
 
-
+const { t } = useI18n();
 const defaultColumns = [
   {
     key: 'email',
-    label: 'Email',
+    label: t('users.email'),
     sortable: true
   },
   {
     key: 'type',
-    label: 'Type'
+    label: t('users.type')
   },
   {
     key: 'createdAt',
-    label: 'Created',
+    label: t('users.created'),
     sortable: true
   },
   {
     key: 'updatedAt',
-    label: 'Updated',
+    label: t('users.updated'),
     sortable: true
   }
 ];
 
 function getType(type: UserType): string {
   switch (type) {
-    case UserType.Admin: return 'Admin';
-    case UserType.Teacher: return 'Teacher';
-    case UserType.Parent: return 'Parent';
-    case UserType.Student: return 'Student';
-    default: return 'Unknown';
+    case UserType.Admin: return t('users.types.admin');
+    case UserType.Teacher: return t('users.types.teacher');
+    case UserType.Parent: return t('users.types.parent');
+    case UserType.Student: return t('users.types.student');
+    default: return t('users.types.unknown');
   }
 }
 
@@ -44,7 +44,7 @@ function getColor(type: UserType): string {
     case UserType.Teacher: return 'orange';
     case UserType.Parent: return 'green';
     case UserType.Student: return 'blue';
-    default: return 'Unknown';
+    default: return 'gray';
   }
 }
 
@@ -67,7 +67,7 @@ const query = computed(() => ({
 }));
 
 const { data, pending } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
-const defaultTypes = Object.keys(UserType).filter(e => isNaN(Number(e))).map(e => ({ value: UserType[e], label: e }));
+const defaultTypes = Object.keys(UserType).filter(e => isNaN(Number(e))).map(e => ({ value: UserType[e], label: t(`users.types.${e.toLowerCase()}`) }));
 
 function onSelect(row: TUIUser) {
   const index = selected.value.findIndex((item) => item.id === row.id);
@@ -91,21 +91,21 @@ defineShortcuts({
     <UDashboardPanel grow>
       <UDashboardNavbar :title="$t('users.title')" :badge="data.content.length + ' / ' + data.totalElements">
         <template #right>
-          <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off"
-            placeholder="Filtrer les utilisateurs..." class="hidden lg:block" @keydown.esc="$event.target.blur()">
+          <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off" :placeholder="$t('users.filter')"
+            class="hidden lg:block" @keydown.esc="$event.target.blur()">
             <template #trailing>
               <UKbd value="/" />
             </template>
           </UInput>
 
-          <UButton label="Nouvel utilisateur" trailing-icon="i-heroicons-plus" color="gray"
+          <UButton :label="$t('users.new')" trailing-icon="i-heroicons-plus" color="gray"
             @click="isNewUserModalOpen = true" />
         </template>
       </UDashboardNavbar>
 
       <UDashboardToolbar>
         <template #left>
-          <USelectMenu v-model="selectedTypes" icon="i-heroicons-check-circle" placeholder="Type" multiple
+          <USelectMenu v-model="selectedTypes" icon="i-heroicons-check-circle" :placeholder="$t('users.type')" multiple
             :options="defaultTypes" :ui-menu="{ option: { base: 'capitalize' } }" />
         </template>
 
@@ -113,13 +113,13 @@ defineShortcuts({
           <USelectMenu v-model="selectedColumns" icon="i-heroicons-adjustments-horizontal-solid"
             :options="defaultColumns" multiple class="hidden lg:block">
             <template #label>
-              Display
+              {{ $t('users.columns') }}
             </template>
           </USelectMenu>
         </template>
       </UDashboardToolbar>
 
-      <UDashboardModal v-model="isNewUserModalOpen" title="New user" description="Add a new user to your database"
+      <UDashboardModal v-model="isNewUserModalOpen" :title="$t('users.new')" :description="$t('users.description')"
         :ui="{ width: 'sm:max-w-md' }">
         <!-- ~/components/users/UsersForm.vue -->
         <UsersForm @close="isNewUserModalOpen = false" />
@@ -139,11 +139,11 @@ defineShortcuts({
         </template>
 
         <template #createdAt-data="{ row }">
-          {{ format(new Date(row.createdAt), 'yyyy-MM-dd')  }}
+          {{ format(new Date(row.createdAt), 'yyyy-MM-dd') }}
         </template>
-        
+
         <template #updatedAt-data="{ row }">
-          {{ format(new Date(row.updatedAt), 'yyyy-MM-dd')  }}
+          {{ format(new Date(row.updatedAt), 'yyyy-MM-dd') }}
         </template>
       </UTable>
 

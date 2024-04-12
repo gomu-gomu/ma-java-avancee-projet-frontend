@@ -6,7 +6,22 @@
     "title": "Dashboard"
   },
   "users": {
-    "title": "Users"
+    "title": "Users",
+    "description": "Add a new user",
+    "new": "New User",
+    "filter": "Filter users...",
+    "columns": "Columns",
+    "email": "Email",
+    "type": "Type",
+    "created": "Created",
+    "updated": "Last Updated",
+    "types": {
+      "admin": "Admin",
+      "teacher": "Teacher",
+      "parent": "Parent",
+      "student": "Student",
+      "unknown": "Unknown"
+    }
   },
   "inbox": {
     "title": "Inbox"
