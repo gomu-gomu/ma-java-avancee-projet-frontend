@@ -69,7 +69,7 @@ const query = computed(() => ({
   types: selectedTypes.value.map(e => e.value)
 }));
 
-const { data: response, pending } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
+const { data: response, pending, refresh } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
 const defaultTypes = Object.keys(UserType).filter(e => isNaN(Number(e))).map(e => ({ value: UserType[e], label: t(`users.types.${e.toLowerCase()}`) }));
 
 async function onDelete(): Promise<void> {
@@ -92,6 +92,8 @@ async function onDelete(): Promise<void> {
         title: t('users.toasts.delete.title'),
         description: t('users.toasts.delete.description.success'),
       });
+
+      refresh();
     } else {
       toast.add({
         id: 'user_deleted',
