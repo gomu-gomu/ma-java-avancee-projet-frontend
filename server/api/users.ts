@@ -39,8 +39,7 @@ export default eventHandler(async (event) => {
       const { q, page, types, sort, order } = getQuery(event) as { q?: string, page: number, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
 
       const pageNumber = Math.max(0, page - 1);
-      const base = (q && q?.trim()?.length > 0) ? ['users', 'search', 'by-email'] : ['users'];
-      const url = buildUrl(base, { email: q, page: pageNumber, sort: [sort, order].join(',') });
+      const url = buildUrl(['users', 'search', 'by-all'], { email: q, types, page: pageNumber, sort: [sort, order].join(',') });
       const response = await $fetch<TResponse<{ users: Array<TUser> }>>(url);
 
       return {
@@ -61,8 +60,8 @@ export default eventHandler(async (event) => {
     case 'DELETE': {
       const user = await readBody<TUser>(event);
       const url = buildUrl(['users', user.id]);
-      const response = await $fetch(url, { method: 'DELETE' });
-      console.log({ url, response });
+
+      await $fetch(url, { method: 'DELETE' });
       return true;
     }
   }
