@@ -9,12 +9,22 @@
     "title": "Utilisateurs",
     "description": "Ajouter un nouvel utilisateur",
     "new": "Nouvel Utilisateur",
+    "delete": "Supprimer Utilisateur(s)",
     "filter": "Filtrer les utilisateurs...",
     "columns": "Colonnes",
     "email": "E-mail",
     "type": "Type",
     "created": "Créé",
     "updated": "Dernière Mise à Jour",
+    "toasts": {
+      "delete": {
+        "title": "Effacement",
+        "description": {
+          "failure": "L'utilisateur n'a pas pu être supprimé",
+          "success": "L'utilisateur a été supprimé avec succès"
+        }
+      }
+    },
     "types": {
       "admin": "Administrateur",
       "teacher": "Professeur",

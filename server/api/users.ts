@@ -3,7 +3,9 @@ import { identicon } from '@dicebear/collection';
 
 import type { TUIUser } from '~/types';
 import type { TPage } from '~/types/page';
+import type { TUser } from '~/types/user';
 import type { UserType } from '~/types/user-type';
+import type { TResponse } from '~/types/response';
 
 
 
@@ -14,9 +16,9 @@ function generateAvatar(seed: string): string {
   return avatar.toDataUriSync();
 }
 
-function buildUrl(endPoint: string, params?: object): string {
+function buildUrl(endPoint: Array<string>, params?: object): string {
   const queryParams = [];
-  let url = `${config.api}/${endPoint}`;
+  let url = [config.api, ...endPoint].join('/');
 
   if (params) {
     url += '?';
@@ -37,13 +39,14 @@ export default eventHandler(async (event) => {
       const { q, page, types, sort, order } = getQuery(event) as { q?: string, page: number, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
 
       const pageNumber = Math.max(0, page - 1);
-      const url = buildUrl(`user/page/${pageNumber}`, { q, types, sort, order });
-      const users = await $fetch<TPage<Array<TUIUser>>>(url);
+      const base = (q && q?.trim()?.length > 0) ? ['users', 'search', 'by-email'] : ['users'];
+      const url = buildUrl(base, { email: q, page: pageNumber, sort: [sort, order].join(',') });
+      const response = await $fetch<TResponse<{ users: Array<TUser> }>>(url);
 
       return {
-        ...users,
-        content: users.content
-          .map((e, i) => ({
+        page: response.page,
+        data: response._embedded.users
+          .map(e => ({
             id: e.id,
             type: e.type,
             email: e.email,
@@ -52,16 +55,15 @@ export default eventHandler(async (event) => {
             updatedAt: e.updatedAt,
             avatar: { src: generateAvatar(e.id) },
           }))
-      };
+      } as TPage<Array<TUIUser>>;
     }
 
     case 'DELETE': {
-      const user = await readBody(event);
-      const url = buildUrl(`user`);
-      console.log({ user });
-      const response = await $fetch<boolean>(url, { method: 'DELETE', body: user });
-
-      console.log('deleting', { user, response });
+      const user = await readBody<TUser>(event);
+      const url = buildUrl(['users', user.id]);
+      const response = await $fetch(url, { method: 'DELETE' });
+      console.log({ url, response });
+      return true;
     }
   }
 });

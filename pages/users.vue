@@ -7,6 +7,8 @@ import { UserType } from '~/types/user-type';
 
 
 const { t } = useI18n();
+const toast = useToast();
+
 const defaultColumns = [
   {
     key: 'email',
@@ -67,7 +69,7 @@ const query = computed(() => ({
   types: selectedTypes.value.map(e => e.value)
 }));
 
-const { data, pending } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
+const { data: response, pending } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
 const defaultTypes = Object.keys(UserType).filter(e => isNaN(Number(e))).map(e => ({ value: UserType[e], label: t(`users.types.${e.toLowerCase()}`) }));
 
 async function onDelete(): Promise<void> {
@@ -82,7 +84,22 @@ async function onDelete(): Promise<void> {
     } as TUser;
 
     const { data } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { method: 'DELETE', body: userObj });
-    console.log({ data });
+
+    if (data) {
+      toast.add({
+        id: 'user_deleted',
+        icon: 'i-heroicons-check',
+        title: t('users.toasts.delete.title'),
+        description: t('users.toasts.delete.description.success'),
+      });
+    } else {
+      toast.add({
+        id: 'user_deleted',
+        icon: 'i-heroicons-x-mark',
+        title: t('users.toasts.delete.title'),
+        description: t('users.toasts.delete.description.failure')
+      });
+    }
   }
 }
 
@@ -96,7 +113,8 @@ defineShortcuts({
 <template>
   <UDashboardPage>
     <UDashboardPanel grow>
-      <UDashboardNavbar :title="$t('users.title')" :badge="data?.content.length + ' / ' + data?.totalElements">
+      <UDashboardNavbar :title="$t('users.title')"
+        :badge="response?.data.length + ' / ' + response?.page.totalElements">
         <template #right>
           <UInput ref="input" v-model="q" icon="i-heroicons-funnel" autocomplete="off" :placeholder="$t('users.filter')"
             class="hidden lg:block" @keydown.esc="$event.target.blur()">
@@ -135,7 +153,7 @@ defineShortcuts({
         <UsersForm @close="isNewUserModalOpen = false" />
       </UDashboardModal>
 
-      <UTable v-model="selected" v-model:sort="sort" :rows="data?.content" :columns="columns" :loading="pending"
+      <UTable v-model="selected" v-model:sort="sort" :rows="response?.data" :columns="columns" :loading="pending"
         sort-mode="manual" class="w-full" :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }">
         <template #email-data="{ row }">
           <div class="flex items-center gap-3">
@@ -158,7 +176,7 @@ defineShortcuts({
       </UTable>
 
       <div class="flex justify-center px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
-        <UPagination v-model="page" :page-count="data?.size" :total="data?.totalElements" />
+        <UPagination v-model="page" :page-count="response?.page.size" :total="response?.page.totalElements" />
       </div>
     </UDashboardPanel>
   </UDashboardPage>

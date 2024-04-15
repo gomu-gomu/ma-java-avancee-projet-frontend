@@ -9,12 +9,22 @@
     "title": "Users",
     "description": "Add a new user",
     "new": "New User",
+    "delete": "Delete User(s)",
     "filter": "Filter users...",
     "columns": "Columns",
     "email": "Email",
     "type": "Type",
     "created": "Created",
     "updated": "Last Updated",
+    "toasts": {
+      "delete": {
+        "title": "Deletion",
+        "description": {
+          "failure": "User could not be deleted",
+          "success": "User was deleted successfully"
+        }
+      }
+    },
     "types": {
       "admin": "Admin",
       "teacher": "Teacher",
