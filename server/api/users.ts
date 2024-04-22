@@ -33,6 +33,16 @@ function buildUrl(endPoint: Array<string>, params?: object): string {
   return url + queryParams.join('&');
 }
 
+function buildOptions(method: string): object {
+  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBoYXJ2YXJkLmVkdSIsImlhdCI6MTcxMzczNzQwNiwiZXhwIjoxNzEzODIzODA2fQ.CspFiaorSdPF4-XKF7Qoo36Dm3sLFWxRUXOGdvA4xFA';
+  const headers: Headers = new Headers();
+
+  headers.append('Authorization', `Bearer ${token}`);
+  headers.append('Content-Type', `application/json`);
+
+  return { method, headers };
+}
+
 export default eventHandler(async (event) => {
   switch (event.method) {
     case 'GET': {
@@ -40,7 +50,8 @@ export default eventHandler(async (event) => {
 
       const pageNumber = Math.max(0, page - 1);
       const url = buildUrl(['users', 'search', 'by-all'], { email: q, types, page: pageNumber, sort: [sort, order].join(',') });
-      const response = await $fetch<TResponse<{ users: Array<TUser> }>>(url);
+      const options = buildOptions('GET');
+      const response = await $fetch<TResponse<{ users: Array<TUser> }>>(url, options);
 
       return {
         page: response.page,
@@ -60,8 +71,9 @@ export default eventHandler(async (event) => {
     case 'DELETE': {
       const user = await readBody<TUser>(event);
       const url = buildUrl(['users', user.id]);
+      const options = buildOptions('DELETE');
 
-      await $fetch(url, { method: 'DELETE' });
+      await $fetch(url, options);
       return true;
     }
   }
