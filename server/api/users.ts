@@ -4,9 +4,9 @@ import { identicon } from '@dicebear/collection';
 import type { TUIUser } from '~/types';
 import type { TPage } from '~/types/page';
 import type { TUser } from '~/types/user';
-import type { UserType } from '~/types/user-type';
+import type { UserType } from '~/core/enums/user-type.enum';
 import type { TResponse } from '~/types/response';
-import { ApiMethod } from '~/types/api';
+import { ApiMethod } from '~/core/enums/api-method.enum';
 import { ApiHelper } from '~/core/helpers/api.helper';
 
 

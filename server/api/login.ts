@@ -1,5 +1,5 @@
-import { ApiMethod } from '~/types/api';
 import { ApiHelper } from '~/core/helpers/api.helper';
+import { ApiMethod } from '~/core/enums/api-method.enum';
 import type { TLoginRequest, TLoginResponse } from '~/types/login';
 
 

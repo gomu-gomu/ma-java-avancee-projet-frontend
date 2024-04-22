@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import type { TUIUser } from '~/types';
 import type { TPage } from '~/types/page';
 import type { TUser } from '~/types/user';
-import { UserType } from '~/types/user-type';
+import { UserType } from '~/core/enums/user-type.enum';
 
 
 const { t } = useI18n();

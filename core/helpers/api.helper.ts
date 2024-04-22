@@ -1,5 +1,5 @@
-import { ApiMethod } from '~/types/api';
 import type { TApiParams } from '~/types/api';
+import { ApiMethod } from '~/core/enums/api-method.enum';
 
 
 

@@ -1,5 +1,5 @@
 import type { TBase } from './base';
-import type { UserType } from './user-type';
+import type { UserType } from '../core/enums/user-type.enum';
 
 export type TUser = {
   email: string
