@@ -11,18 +11,14 @@ import { ApiHelper } from '~/core/helpers/api.helper';
 
 
 
-
-
 function generateAvatar(seed: string): string {
-  const avatar = createAvatar(identicon, { seed, });
+  const avatar = createAvatar(identicon, { seed });
   return avatar.toDataUriSync();
 }
 
-
-
 export default eventHandler(async (event) => {
   switch (event.method) {
-    case 'GET': {
+    case ApiMethod.Get: {
       const { q, page, types, sort, order } = getQuery(event) as { q?: string, page: number, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
 
       const pageNumber = Math.max(0, page - 1);
@@ -45,7 +41,7 @@ export default eventHandler(async (event) => {
       } as TPage<Array<TUIUser>>;
     }
 
-    case 'DELETE': {
+    case ApiMethod.Delete: {
       try {
         const user = await readBody<TUser>(event);
         const path = ['users', user.id];

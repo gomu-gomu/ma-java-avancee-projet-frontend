@@ -5,7 +5,7 @@ import type { TLoginRequest, TLoginResponse } from '~/types/login';
 
 export default eventHandler(async (event) => {
   switch (event.method) {
-    case 'POST': {
+    case ApiMethod.Post: {
       const login = await readBody<TLoginRequest>(event);
       const path = ['auth', 'login'];
       const params = { body: login, methods: ApiMethod.Post };
