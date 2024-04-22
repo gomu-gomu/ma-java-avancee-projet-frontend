@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { jwtDecode } from 'jwt-decode';
 import { useAuthStore } from '~/store/auth.store';
 
 const { metaSymbol } = useShortcuts();
@@ -7,7 +8,8 @@ const { isDashboardSearchModalOpen } = useUIState();
 
 
 
-const { logout } = useAuthStore();
+const { accessToken, isAuthenticated, logout } = useAuthStore();
+let email = ref('');
 
 function onLogout() {
   logout();
@@ -29,10 +31,18 @@ const items = computed(() => [
     }
   ]
 ]);
+
+onMounted(() => {
+  if (isAuthenticated) {
+    const res = jwtDecode(accessToken as string);
+    email.value = res.sub ?? '';
+  }
+});
 </script>
 
 <template>
-  <UDropdown mode="hover" :items="items" :ui="{ width: 'w-full', item: { disabled: 'cursor-text select-text' } }"
+  <UDropdown v-if="isAuthenticated" mode="hover" :items="items"
+    :ui="{ width: 'w-full', item: { disabled: 'cursor-text select-text' } }"
     :popper="{ strategy: 'absolute', placement: 'top' }" class="w-full">
     <template #default="{ open }">
       <UButton color="gray" variant="ghost" class="w-full" label="Benjamin"
@@ -53,7 +63,7 @@ const items = computed(() => [
           Signed in as
         </p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
-          ben@nuxtlabs.com
+          {{ email }}
         </p>
       </div>
     </template>

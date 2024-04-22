@@ -105,7 +105,7 @@ const groups = [
 
 <template>
   <UDashboardLayout>
-    <UDashboardPanel v-if="auth.isAuthenticated" :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
+    <UDashboardPanel v-if="$route.name !== 'login'" :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
       <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
         <template #left>
           <div class="head">
