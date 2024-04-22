@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     }
   },
   extends: [process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro'],
-  modules: ['@nuxt/ui', '@nuxt/fonts', '@vueuse/nuxt', '@nuxtjs/i18n', '@pinia/nuxt'],
+  modules: ['@nuxt/ui', '@nuxt/fonts', '@vueuse/nuxt', '@nuxtjs/i18n', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
   spaLoadingTemplate: '~/assets/pages/loading.html',
   ui: {
     icons: ['heroicons', 'simple-icons'],

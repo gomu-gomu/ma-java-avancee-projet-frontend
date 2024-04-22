@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import { jwtDecode } from 'jwt-decode';
+
 import type { TAuthState } from '~/types/state';
 import type { TLoginResponse } from '~/types/login';
 
@@ -9,9 +11,18 @@ export const useAuthStore = defineStore('auth', {
     accessToken: null,
     refreshToken: null
   }),
+  persist: true,
   getters: {
     isAuthenticated: (state) => {
-      return Boolean(state.accessToken && state.accessToken?.length > 0);
+      if (!state.accessToken || state.accessToken?.length === 0) {
+        return false;
+      }
+
+      const token = jwtDecode(state.accessToken);
+      const expiration = token.exp ?? 0;
+      const now = Date.now() / 1000;
+
+      return now <= expiration;
     }
   },
   actions: {
