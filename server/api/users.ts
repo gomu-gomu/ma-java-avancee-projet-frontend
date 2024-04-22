@@ -1,6 +1,3 @@
-import { createAvatar } from '@dicebear/core';
-import { identicon } from '@dicebear/collection';
-
 import type { TUIUser } from '~/types';
 import type { TPage } from '~/types/page';
 import type { TUser } from '~/types/user';
@@ -8,13 +5,9 @@ import type { UserType } from '~/core/enums/user-type.enum';
 import type { TResponse } from '~/types/response';
 import { ApiMethod } from '~/core/enums/api-method.enum';
 import { ApiHelper } from '~/core/helpers/api.helper';
+import { UserHelper } from '~/core/helpers/user.helper';
 
 
-
-function generateAvatar(seed: string): string {
-  const avatar = createAvatar(identicon, { seed });
-  return avatar.toDataUriSync();
-}
 
 export default eventHandler(async (event) => {
   switch (event.method) {
@@ -36,7 +29,7 @@ export default eventHandler(async (event) => {
             password: e.email,
             createdAt: e.createdAt,
             updatedAt: e.updatedAt,
-            avatar: { src: generateAvatar(e.id) },
+            avatar: { src: UserHelper.generateAvatar(e.id) },
           }))
       } as TPage<Array<TUIUser>>;
     }
