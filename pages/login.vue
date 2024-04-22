@@ -21,7 +21,7 @@ function validate(state: any): Array<FormError> {
 
 async function onSubmit(event: FormSubmitEvent<any>) {
   const { data } = await useFetch<TLoginResponse | false>('/api/login', { method: 'POST', body: event.data });
-  
+
   if (data.value === false) {
     toast.add({ title: 'Invalid credentials', color: 'red', icon: 'i-heroicons-x-circle' });
   } else {
