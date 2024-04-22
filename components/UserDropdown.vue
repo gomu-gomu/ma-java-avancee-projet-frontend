@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { useAuthStore } from '~/store/auth.store';
+
 const { metaSymbol } = useShortcuts();
 const { isHelpSlideoverOpen } = useDashboard();
 const { isDashboardSearchModalOpen } = useUIState();
 
 
 
+const { logout } = useAuthStore();
+
 function onLogout() {
-  console.log('Logging out...');
-  navigateTo('/login');
+  logout();
 }
 
 const items = computed(() => [

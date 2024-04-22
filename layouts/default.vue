@@ -1,6 +1,20 @@
 <script setup lang="ts">
+import { useAuthStore } from '~/store/auth.store';
+
+
 const route = useRoute();
+const toast = useToast();
+const auth = useAuthStore();
 const { t, locale } = useI18n();
+
+watch(() => auth.isAuthenticated, (isAuthenticated) => {
+  if (isAuthenticated) {
+    navigateTo('/');
+    toast.add({ title: 'Logged-in successfully', color: 'green', icon: 'i-heroicons-check-circle' });
+  } else {
+    navigateTo('/login');
+  }
+});
 
 watch(locale, (language: string) => {
   useHead({
@@ -87,12 +101,11 @@ const groups = [
     ]
   }
 ];
-
 </script>
 
 <template>
   <UDashboardLayout>
-    <UDashboardPanel :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
+    <UDashboardPanel v-if="auth.isAuthenticated" :width="250" :resizable="{ min: 200, max: 300 }" collapsible>
       <UDashboardNavbar class="!border-transparent" :ui="{ left: 'flex-1' }">
         <template #left>
           <div class="head">

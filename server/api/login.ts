@@ -8,7 +8,7 @@ export default eventHandler(async (event) => {
     case ApiMethod.Post: {
       const login = await readBody<TLoginRequest>(event);
       const path = ['auth', 'login'];
-      const params = { body: login, methods: ApiMethod.Post };
+      const params = { body: login, method: ApiMethod.Post };
 
       try {
         const response = await ApiHelper.fetch<TLoginResponse>(path, params);

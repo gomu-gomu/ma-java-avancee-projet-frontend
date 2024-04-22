@@ -36,10 +36,10 @@ const filteredMails = computed(() => {
 const selectedMail = ref<Mail | null>()
 
 const isMailPanelOpen = computed({
-  get () {
+  get() {
     return !!selectedMail.value
   },
-  set (value: boolean) {
+  set(value: boolean) {
     if (!value) {
       selectedMail.value = null
     }
@@ -51,7 +51,7 @@ watch(filteredMails, () => {
   if (!filteredMails.value.find(mail => mail.id === selectedMail.value?.id)) {
     selectedMail.value = null
   }
-})
+});
 </script>
 
 <template>
@@ -59,7 +59,8 @@ watch(filteredMails, () => {
     <UDashboardPanel id="inbox" :width="400" :resizable="{ min: 300, max: 500 }">
       <UDashboardNavbar title="Inbox" :badge="filteredMails.length">
         <template #right>
-          <UTabs v-model="selectedTab" :items="tabItems" :ui="{ wrapper: '', list: { height: 'h-9', tab: { height: 'h-7', size: 'text-[13px]' } } }" />
+          <UTabs v-model="selectedTab" :items="tabItems"
+            :ui="{ wrapper: '', list: { height: 'h-9', tab: { height: 'h-7', size: 'text-[13px]' } } }" />
         </template>
       </UDashboardNavbar>
 
@@ -90,7 +91,8 @@ watch(filteredMails, () => {
             <UPopover :popper="{ placement: 'bottom-start' }">
               <template #default="{ open }">
                 <UTooltip text="Snooze" :prevent="open">
-                  <UButton icon="i-heroicons-clock" color="gray" variant="ghost" :class="[open && 'bg-gray-50 dark:bg-gray-800']" />
+                  <UButton icon="i-heroicons-clock" color="gray" variant="ghost"
+                    :class="[open && 'bg-gray-50 dark:bg-gray-800']" />
                 </UTooltip>
               </template>
 

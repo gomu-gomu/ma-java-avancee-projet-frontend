@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import type { FormError, FormSubmitEvent } from '#ui/types';
+import { useAuthStore } from '~/store/auth.store';
 import type { TLoginResponse } from '~/types/login';
 
 
 
 const toast = useToast();
+const { login } = useAuthStore();
 const state = reactive({
   email: '',
   password: ''
@@ -21,11 +23,11 @@ function validate(state: any): Array<FormError> {
 
 async function onSubmit(event: FormSubmitEvent<any>) {
   const { data } = await useFetch<TLoginResponse | false>('/api/login', { method: 'POST', body: event.data });
-
+  
   if (data.value === false) {
     toast.add({ title: 'Invalid credentials', color: 'red', icon: 'i-heroicons-x-circle' });
   } else {
-    toast.add({ title: 'Logged-in successfully', color: 'green', icon: 'i-heroicons-check-circle' });
+    login(data.value as TLoginResponse);
   }
 }
 </script>
