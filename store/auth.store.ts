@@ -3,11 +3,13 @@ import { jwtDecode } from 'jwt-decode';
 
 import type { TAuthState } from '~/types/state';
 import type { TLoginResponse } from '~/types/login';
+import type { TAccount } from '~/types/account';
 
 
 
 export const useAuthStore = defineStore('auth', {
   state: (): TAuthState => ({
+    user: null,
     accessToken: null,
     refreshToken: null
   }),
@@ -35,6 +37,10 @@ export const useAuthStore = defineStore('auth', {
     logout() {
       this.accessToken = null;
       this.refreshToken = null;
+    },
+
+    load(user: TAccount) {
+      this.user = user;
     }
   }
 });

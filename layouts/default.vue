@@ -1,18 +1,17 @@
 <script setup lang="ts">
+import { AuthHelper } from '~/core/helpers/auth.helper';
 import { useAuthStore } from '~/store/auth.store';
 
 
 const route = useRoute();
-const toast = useToast();
 const auth = useAuthStore();
 const { t, locale } = useI18n();
 
 watch(() => auth.isAuthenticated, (isAuthenticated) => {
   if (isAuthenticated) {
-    navigateTo('/');
-    toast.add({ title: 'Logged-in successfully', color: 'green', icon: 'i-heroicons-check-circle' });
+    AuthHelper.onLoggedIn();
   } else {
-    navigateTo('/login');
+    AuthHelper.onLoggedOut();
   }
 });
 
