@@ -6,42 +6,19 @@ import type { TPage } from '~/types/page';
 import type { TUser } from '~/types/user';
 import type { UserType } from '~/types/user-type';
 import type { TResponse } from '~/types/response';
+import { ApiMethod } from '~/types/api';
+import { ApiHelper } from '~/core/helpers/api.helper';
 
 
 
-const config = useAppConfig();
+
 
 function generateAvatar(seed: string): string {
   const avatar = createAvatar(identicon, { seed, });
   return avatar.toDataUriSync();
 }
 
-function buildUrl(endPoint: Array<string>, params?: object): string {
-  const queryParams = [];
-  let url = [config.api, ...endPoint].join('/');
 
-  if (params) {
-    url += '?';
-
-    for (const [key, value] of Object.entries(params)) {
-      if (value) {
-        queryParams.push(`${key}=${value}`);
-      }
-    }
-  }
-
-  return url + queryParams.join('&');
-}
-
-function buildOptions(method: string): object {
-  const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBoYXJ2YXJkLmVkdSIsImlhdCI6MTcxMzczNzQwNiwiZXhwIjoxNzEzODIzODA2fQ.CspFiaorSdPF4-XKF7Qoo36Dm3sLFWxRUXOGdvA4xFA';
-  const headers: Headers = new Headers();
-
-  headers.append('Authorization', `Bearer ${token}`);
-  headers.append('Content-Type', `application/json`);
-
-  return { method, headers };
-}
 
 export default eventHandler(async (event) => {
   switch (event.method) {
@@ -49,9 +26,9 @@ export default eventHandler(async (event) => {
       const { q, page, types, sort, order } = getQuery(event) as { q?: string, page: number, types: Array<UserType>, sort?: 'name' | 'email', order?: 'asc' | 'desc' };
 
       const pageNumber = Math.max(0, page - 1);
-      const url = buildUrl(['users', 'search', 'by-all'], { email: q, types, page: pageNumber, sort: [sort, order].join(',') });
-      const options = buildOptions('GET');
-      const response = await $fetch<TResponse<{ users: Array<TUser> }>>(url, options);
+      const path = ['users', 'search', 'by-all'];
+      const queryParams = { email: q, types, page: pageNumber, sort: [sort, order].join(',') };
+      const response = await ApiHelper.fetch<TResponse<{ users: Array<TUser> }>>(path, { queryParams });
 
       return {
         page: response.page,
@@ -69,12 +46,16 @@ export default eventHandler(async (event) => {
     }
 
     case 'DELETE': {
-      const user = await readBody<TUser>(event);
-      const url = buildUrl(['users', user.id]);
-      const options = buildOptions('DELETE');
+      try {
+        const user = await readBody<TUser>(event);
+        const path = ['users', user.id];
+        const params = { method: ApiMethod.Delete, body: user };
 
-      await $fetch(url, options);
-      return true;
+        await ApiHelper.fetch(path, params);
+        return true;
+      } catch (err) {
+        return false;
+      }
     }
   }
 });
