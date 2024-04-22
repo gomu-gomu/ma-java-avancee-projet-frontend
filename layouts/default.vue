@@ -9,9 +9,9 @@ const { t, locale } = useI18n();
 
 watch(() => auth.isAuthenticated, (isAuthenticated) => {
   if (isAuthenticated) {
-    AuthHelper.onLoggedIn();
+    AuthHelper.onLoggedIn(t);
   } else {
-    AuthHelper.onLoggedOut();
+    AuthHelper.onLoggedOut(t);
   }
 });
 

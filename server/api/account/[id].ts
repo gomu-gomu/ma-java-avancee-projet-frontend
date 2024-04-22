@@ -45,7 +45,6 @@ export default eventHandler(async (event) => {
             username = user.email.split('@')[0];
           }
         }
-        console.log((user as any)._links);
 
         return {
           username,

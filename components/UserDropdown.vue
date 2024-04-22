@@ -26,7 +26,7 @@ const items = computed(() => [
   ],
   [
     {
-      label: 'Sign out',
+      label: t('login.labels.logout'),
       click: onLogout,
       icon: 'i-heroicons-arrow-left-on-rectangle'
     }
@@ -57,7 +57,7 @@ const items = computed(() => [
     <template #account>
       <div class="text-left">
         <p>
-          Signed in as
+          {{ t('login.labels.signedInAs') }}
         </p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
           {{ auth.user?.email }}

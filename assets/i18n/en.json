@@ -72,5 +72,29 @@
       "general": "General",
       "notifications": "Notifications"
     }
+  },
+  "login": {
+    "slogan": "Your trusted orientation portal",
+    "labels": {
+      "email": "Email",
+      "password": "Password",
+      "forgot": "I forgot my password",
+      "login": "Login",
+      "logout": "Logout",
+      "signedInAs": "Signed in as"
+    },
+    "placeholders": {
+      "email": "Your email address...",
+      "password": "Your account password..."
+    },
+    "errors": {
+      "email": "Please enter your email.",
+      "password": "Please enter your password.",
+      "invalid": "Invalid credentials!"
+    },
+    "alerts": {
+      "loggedIn": "Logged-in successfully!",
+      "loggedOut": "Logged-out successfully!"
+    }
   }
 }

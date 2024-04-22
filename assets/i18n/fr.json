@@ -72,5 +72,29 @@
       "general": "Générale",
       "notifications": "Notifications"
     }
+  },
+  "login": {
+    "slogan": "Votre portail d'orientation de confiance",
+    "labels": {
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "forgot": "j'ai oublié mon mot de passe",
+      "login": "Se connecter",
+      "logout": "Se déconnecter",
+      "signedInAs": "Connecté en tant que"
+    },
+    "placeholders": {
+      "email": "Votre adresse e-mail...",
+      "password": "Mot de passe de votre compte..."
+    },
+    "errors": {
+      "email": "Veuillez entrer votre email.",
+      "password": "S'il vous plait entrez votre mot de passe.",
+      "invalid": "Les informations d'identification invalides !"
+    },
+    "alerts": {
+      "loggedIn": "Connecté avec succès !",
+      "loggedOut": "Déconnexion réussie !"
+    }
   }
 }

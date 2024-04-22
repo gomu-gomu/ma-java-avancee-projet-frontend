@@ -24,14 +24,15 @@ export class AuthHelper {
     toast.add({ title, color, icon: 'i-heroicons-check-circle' });
   }
 
-  public static onLoggedIn(): void {
+  public static onLoggedIn(t: any): void {
     navigateTo('/');
+
     this.loadAccount();
-    this.raiseToast('Logged-in successfully', 'green');
+    this.raiseToast(t('login.alerts.loggedIn'), 'green');
   }
 
-  public static onLoggedOut(): void {
+  public static onLoggedOut(t: any): void {
     navigateTo('/login');
-    this.raiseToast('Logged-out successfully', 'blue');
+    this.raiseToast(t('login.alerts.loggedOut'), 'blue');
   }
 }
