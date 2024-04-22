@@ -35,6 +35,17 @@ export class ApiHelper {
     return { method, headers };
   }
 
+  public static fetchURL<T = any>(url: string, params?: Partial<TApiParams>): Promise<T> {
+    return new Promise((resolve, reject) => {
+      const options = {
+        ...this.buildOptions(params?.method ?? ApiMethod.Get),
+        body: params?.body
+      };
+
+      $fetch<T>(url, options).then(resolve as any).catch(reject);
+    });
+  }
+
   public static fetch<T = any>(path: Array<string>, params?: Partial<TApiParams>): Promise<T> {
     return new Promise((resolve, reject) => {
       const url = this.buildUrl(path, params?.queryParams);

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/store/auth.store';
+import { UserType } from '~/core/enums/user-type.enum';
 import { UserHelper } from '~/core/helpers/user.helper';
 
 
 
+const { t } = useI18n();
 const auth = useAuthStore();
 const { metaSymbol } = useShortcuts();
 const { isHelpSlideoverOpen } = useDashboard();
@@ -44,6 +46,9 @@ const items = computed(() => [
         </template>
 
         <template #trailing>
+          <UBadge :label="t(UserHelper.getTypeLabel(auth.user?.type as UserType))"
+            :color="UserHelper.getTypeColor(auth.user?.type as UserType)" variant="subtle" size="sm"
+            class="capitalize badge" />
           <UIcon name="i-heroicons-ellipsis-vertical" class="w-5 h-5 ml-auto" />
         </template>
       </UButton>
@@ -61,3 +66,9 @@ const items = computed(() => [
     </template>
   </UDropdown>
 </template>
+
+<style lang="scss">
+.badge {
+  margin-left: auto;
+}
+</style>

@@ -8,6 +8,13 @@ import type { TAccount } from '~/types/account';
 
 
 
+async function getUsername(user: TUser, type: 'teacher' | 'parent' | 'student'): Promise<string> {
+  const path = (user as any)._links[type].href;
+  const data = await ApiHelper.fetchURL(path);
+
+  return `${data.firstName} ${data.lastName}`;
+}
+
 export default eventHandler(async (event) => {
   switch (event.method) {
     case ApiMethod.Get: {
@@ -20,14 +27,17 @@ export default eventHandler(async (event) => {
 
         switch (user.type) {
           case UserType.Teacher: {
+            username = await getUsername(user, 'teacher');
             break;
           }
 
           case UserType.Parent: {
+            username = await getUsername(user, 'parent');
             break;
           }
 
           case UserType.Student: {
+            username = await getUsername(user, 'student');
             break;
           }
 
@@ -40,8 +50,8 @@ export default eventHandler(async (event) => {
         return {
           username,
           id: user.id,
-          email: user.email,
-          type: UserType.Admin
+          type: user.type,
+          email: user.email
         } as TAccount;
       } catch (err) {
         return false;

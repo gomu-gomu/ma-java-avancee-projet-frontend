@@ -4,6 +4,7 @@ import type { TUIUser } from '~/types';
 import type { TPage } from '~/types/page';
 import type { TUser } from '~/types/user';
 import { UserType } from '~/core/enums/user-type.enum';
+import { UserHelper } from '~/core/helpers/user.helper';
 
 
 const { t } = useI18n();
@@ -30,26 +31,6 @@ const defaultColumns = [
     sortable: true
   }
 ];
-
-function getType(type: UserType): string {
-  switch (type) {
-    case UserType.Admin: return t('users.types.admin');
-    case UserType.Teacher: return t('users.types.teacher');
-    case UserType.Parent: return t('users.types.parent');
-    case UserType.Student: return t('users.types.student');
-    default: return t('users.types.unknown');
-  }
-}
-
-function getColor(type: UserType): string {
-  switch (type) {
-    case UserType.Admin: return 'red';
-    case UserType.Teacher: return 'orange';
-    case UserType.Parent: return 'green';
-    case UserType.Student: return 'blue';
-    default: return 'gray';
-  }
-}
 
 const q = ref('');
 const page = ref(1);
@@ -165,7 +146,8 @@ defineShortcuts({
         </template>
 
         <template #type-data="{ row }">
-          <UBadge :label="getType(row.type)" :color="getColor(row.type)" variant="subtle" class="capitalize" />
+          <UBadge :label="t(UserHelper.getTypeLabel(row.type))" :color="UserHelper.getTypeColor(row.type)"
+            variant="subtle" class="capitalize" />
         </template>
 
         <template #createdAt-data="{ row }">
