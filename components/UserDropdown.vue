@@ -71,4 +71,8 @@ const items = computed(() => [
 .badge {
   margin-left: auto;
 }
+
+.i-heroicons-ellipsis-vertical {
+  margin-left: 0;
+}
 </style>
