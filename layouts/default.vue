@@ -1,6 +1,11 @@
 <script setup lang="ts">
+import { Page } from '~/core/enums/page.enum';
+
 import { AuthHelper } from '~/core/helpers/auth.helper';
+import { UserHelper } from '~/core/helpers/user.helper';
+
 import { useAuthStore } from '~/store/auth.store';
+
 
 
 const route = useRoute();
@@ -24,7 +29,7 @@ watch(locale, (language: string) => {
   });
 });
 
-const links = computed(() => ([
+const links = computed(() => (UserHelper.generateMenu([
   {
     id: 'home',
     label: t('home.title'),
@@ -47,7 +52,7 @@ const links = computed(() => ([
     }
   },
   {
-    id: 'users',
+    id: Page.Users,
     label: t('users.title'),
     icon: 'i-heroicons-user-group',
     to: '/users',
@@ -77,7 +82,7 @@ const links = computed(() => ([
       shortcuts: ['G', 'S']
     }
   }
-]));
+])));
 
 const groups = [
   {
