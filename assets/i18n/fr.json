@@ -3,7 +3,14 @@
     "search": "Recherche"
   },
   "home": {
-    "title": "Tableau de bord"
+    "title": "Tableau de bord",
+    "types": {
+      "admin": "Administrateurs",
+      "teacher": "Professeurs",
+      "parent": "Parents",
+      "student": "Étudiants",
+      "unknown": "Inconnus"
+    }
   },
   "users": {
     "title": "Utilisateurs",

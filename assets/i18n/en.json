@@ -3,7 +3,14 @@
     "search": "Search"
   },
   "home": {
-    "title": "Dashboard"
+    "title": "Dashboard",
+    "types": {
+      "admin": "Admins",
+      "teacher": "Teachers",
+      "parent": "Parents",
+      "student": "Students",
+      "unknown": "Unknowns"
+    }
   },
   "users": {
     "title": "Users",
