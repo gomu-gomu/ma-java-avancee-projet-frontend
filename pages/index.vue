@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import AdminDashboard from '~/components/home/admin/AdminDashboard.vue';
+
+import { UserType } from '~/core/enums/user-type.enum';
+import { UserHelper } from '~/core/helpers/user.helper';
 </script>
 
 <template>
@@ -8,7 +11,7 @@ import AdminDashboard from '~/components/home/admin/AdminDashboard.vue';
       <UDashboardNavbar :title="$t('home.title')" />
 
       <UDashboardPanelContent>
-        <AdminDashboard />
+        <AdminDashboard v-if="UserHelper.allowFor(UserType.Admin)" />
       </UDashboardPanelContent>
     </UDashboardPanel>
   </UDashboardPage>

@@ -22,6 +22,11 @@ export class UserHelper {
       .filter(e => e);
   }
 
+  public static allowFor(type: UserType): boolean {
+    const { user } = useAuthStore();
+    return user?.type === type;
+  }
+
   public static canAccess(page: Page): boolean {
     const { user } = useAuthStore();
     const pageNames = Object.values(Page);
