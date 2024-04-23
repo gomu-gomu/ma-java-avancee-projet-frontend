@@ -5,6 +5,7 @@ import type { TPage } from '~/types/page';
 import type { TUser } from '~/types/user';
 import { UserType } from '~/core/enums/user-type.enum';
 import { UserHelper } from '~/core/helpers/user.helper';
+import { RequestHelper } from '~/core/helpers/request.helper';
 
 
 const { t } = useI18n();
@@ -50,7 +51,7 @@ const query = computed(() => ({
   types: selectedTypes.value.map(e => e.value)
 }));
 
-const { data: response, pending, refresh } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { query, default: () => [] });
+const { data: response, pending, refresh } = await RequestHelper.fetch<TPage<Array<TUIUser>>>('users', undefined, { query, default: () => [] });
 const defaultTypes = Object.keys(UserType).filter(e => isNaN(Number(e))).map(e => ({ value: UserType[e], label: t(`users.types.${e.toLowerCase()}`) }));
 
 async function onDelete(): Promise<void> {
@@ -64,7 +65,7 @@ async function onDelete(): Promise<void> {
       updatedAt: user.updatedAt
     } as TUser;
 
-    const { data } = await useFetch<TPage<Array<TUIUser>>>('/api/users', { method: 'DELETE', body: userObj });
+    const { data } = await RequestHelper.fetch<TPage<Array<TUIUser>>>('users/delete', userObj);
 
     if (data) {
       toast.add({
