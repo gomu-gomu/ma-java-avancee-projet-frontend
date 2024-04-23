@@ -1,9 +1,13 @@
 <script lang="ts" setup>
+import AdminCycles from '~/components/home/admin/AdminCycles.vue';
+
 import { sub } from 'date-fns';
 import { UserType } from '~/core/enums/user-type.enum';
-import { RequestHelper } from '~/core/helpers/request.helper';
-import { UserHelper } from '~/core/helpers/user.helper';
+
 import type { Period, Range } from '~/types';
+
+import { UserHelper } from '~/core/helpers/user.helper';
+import { RequestHelper } from '~/core/helpers/request.helper';
 
 
 
@@ -25,10 +29,10 @@ function getCountLabel(type: string) {
       <HomeDateRangePicker v-model="range" class="-ml-2.5" />
       <HomePeriodSelect v-model="period" :range="range" />
     </template>
-  </UDashboardToolbar> -->
+</UDashboardToolbar> -->
 
   <div class="grid lg:grid-cols-3 lg:items-start gap-4">
-    <HomeChart :period="period" :range="range" class="col-span-2" />
+    <AdminCycles :period="period" :range="range" class="col-span-2" />
 
     <div class="col-span-1 grid lg:grid-cols-2 lg:items-start gap-4">
       <ULandingCard :title="getCountLabel('admin')" icon="i-clarity-administrator-line"
