@@ -1,58 +1,36 @@
-import type { TApiParams } from '~/types/api';
+import { UrlHelper } from './url.helper';
 import { ApiMethod } from '~/core/enums/api-method.enum';
 
+import type { TApiParams } from '~/types/api';
 
 
-const config = useAppConfig();
 
 export class ApiHelper {
 
-  private static readonly TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBoYXJ2YXJkLmVkdSIsImlhdCI6MTcxMzczNzQwNiwiZXhwIjoxNzEzODIzODA2fQ.CspFiaorSdPF4-XKF7Qoo36Dm3sLFWxRUXOGdvA4xFA';
+  private static buildOptions(params?: Partial<TApiParams>): object {
+    const headers: Headers = new Headers();
+    const body = { ...(params?.body ?? {}) };
 
-  private static buildUrl(endPoint: Array<string>, params?: object): string {
-    const queryParams = [];
-    let url = [config.api, ...endPoint].join('/');
-
-    if (params) {
-      url += '?';
-
-      for (const [key, value] of Object.entries(params)) {
-        if (value) {
-          queryParams.push(`${key}=${value}`);
-        }
-      }
+    if (Object.hasOwn(body, 'jwt')) {
+      headers.append('Authorization', `Bearer ${body.jwt}`);
+      delete body.jwt;
     }
 
-    return url + queryParams.join('&');
-  }
-
-  private static buildOptions(method: ApiMethod): object {
-    const headers: Headers = new Headers();
-
-    headers.append('Authorization', `Bearer ${this.TOKEN}`);
     headers.append('Content-Type', `application/json`);
 
-    return { method, headers };
+    const hasBody = Object.keys(body).length > 0;
+
+    return {
+      headers,
+      body: hasBody ? params?.body : null,
+      method: params?.method ?? ApiMethod.Get
+    };
   }
 
-  public static fetchURL<T = any>(url: string, params?: Partial<TApiParams>): Promise<T> {
+  public static request<T = any>(path: string | Array<string>, params?: Partial<TApiParams>): Promise<T> {
     return new Promise((resolve, reject) => {
-      const options = {
-        ...this.buildOptions(params?.method ?? ApiMethod.Get),
-        body: params?.body
-      };
-
-      $fetch<T>(url, options).then(resolve as any).catch(reject);
-    });
-  }
-
-  public static fetch<T = any>(path: Array<string>, params?: Partial<TApiParams>): Promise<T> {
-    return new Promise((resolve, reject) => {
-      const url = this.buildUrl(path, params?.queryParams);
-      const options = {
-        ...this.buildOptions(params?.method ?? ApiMethod.Get),
-        body: params?.body
-      };
+      const url = Array.isArray(path) ? UrlHelper.buildUrl(path, params?.queryParams) : path;
+      const options = { ...this.buildOptions(params) };
 
       $fetch<T>(url, options).then(resolve as any).catch(reject);
     });

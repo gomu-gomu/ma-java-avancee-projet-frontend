@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import type { FormError, FormSubmitEvent } from '#ui/types';
-import { useAuthStore } from '~/store/auth.store';
 import type { TLoginResponse } from '~/types/login';
+import type { FormError, FormSubmitEvent } from '#ui/types';
+
+import { useAuthStore } from '~/store/auth.store';
+import { RequestHelper } from '~/core/helpers/request.helper';
 
 
 
@@ -20,10 +22,10 @@ function validate(state: any): Array<FormError> {
 }
 
 async function onSubmit(event: FormSubmitEvent<any>) {
-  const { data } = await useFetch<TLoginResponse | false>('/api/login', { method: 'POST', body: event.data });
+  const { data } = await RequestHelper.fetch<TLoginResponse | false>('login', event.data);
 
-  if (data.value === false) {
-    toast.add({ title: t('login.errors.invalid') /*  'Invalid credentials' */, color: 'red', icon: 'i-heroicons-x-circle' });
+  if (!data.value) {
+    toast.add({ title: t('login.errors.invalid'), color: 'red', icon: 'i-heroicons-x-circle' });
   } else {
     login(data.value as TLoginResponse);
   }

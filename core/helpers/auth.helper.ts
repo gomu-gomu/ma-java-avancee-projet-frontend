@@ -2,6 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useAuthStore } from '~/store/auth.store';
 
 import type { TAccount } from '~/types/account';
+import { RequestHelper } from './request.helper';
 
 
 
@@ -14,7 +15,7 @@ export class AuthHelper {
     if (isAuthenticated) {
       const token = jwtDecode(accessToken as string);
       const userId = (token as any).id;
-      const { data } = await useFetch<TAccount>(`/api/account/${userId}`);
+      const { data } = await RequestHelper.fetch<TAccount>(`account/${userId}`);
 
       load(data.value as TAccount);
     }
