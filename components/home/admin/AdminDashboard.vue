@@ -11,8 +11,12 @@ const { t } = useI18n();
 const period = ref<Period>('daily');
 const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() });
 
-const { data } = await RequestHelper.fetch('users/count');
-console.log(data.value?.admins);
+const { data } = await RequestHelper.fetch('count');
+
+function getCountLabel(type: string) {
+  const key = type.endsWith('s') ? `${type}es` : `${type}s`;
+  return data.value[key] + ' ' + t(`home.count.${type}`);
+}
 </script>
 
 <template>
@@ -21,20 +25,27 @@ console.log(data.value?.admins);
       <HomeDateRangePicker v-model="range" class="-ml-2.5" />
       <HomePeriodSelect v-model="period" :range="range" />
     </template>
-</UDashboardToolbar> -->
+  </UDashboardToolbar> -->
 
   <div class="grid lg:grid-cols-3 lg:items-start gap-4">
     <HomeChart :period="period" :range="range" class="col-span-2" />
 
     <div class="col-span-1 grid lg:grid-cols-2 lg:items-start gap-4">
-      <ULandingCard :title="data?.admins + ' ' + t('home.types.admin')" icon="i-clarity-administrator-line"
+      <ULandingCard :title="getCountLabel('admin')" icon="i-clarity-administrator-line"
         :color="UserHelper.getTypeColor(UserType.Admin) as any" />
-      <ULandingCard :title="data?.teachers + ' ' + t('home.types.teacher')" icon="i-ph-chalkboard-teacher"
+      <ULandingCard :title="getCountLabel('teacher')" icon="i-ph-chalkboard-teacher"
         :color="UserHelper.getTypeColor(UserType.Teacher) as any" />
-      <ULandingCard :title="data?.parents + ' ' + t('home.types.parent')" icon="i-ri-parent-line"
+      <ULandingCard :title="getCountLabel('parent')" icon="i-ri-parent-line"
         :color="UserHelper.getTypeColor(UserType.Parent) as any" />
-      <ULandingCard :title="data?.students + ' ' + t('home.types.student')" icon="i-ph-student"
+      <ULandingCard :title="getCountLabel('student')" icon="i-ph-student"
         :color="UserHelper.getTypeColor(UserType.Student) as any" />
+
+      <UDivider class="col-span-2" />
+
+      <ULandingCard :title="getCountLabel('class')" icon="i-mdi-google-classroom" color="primary" />
+      <ULandingCard :title="getCountLabel('grade')" icon="i-streamline-quality-education" color="primary" />
+      <ULandingCard :title="getCountLabel('sector')" icon="i-carbon-category" color="primary" />
+      <ULandingCard :title="getCountLabel('subject')" icon="i-uil-books" color="primary" />
     </div>
   </div>
 

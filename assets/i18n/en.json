@@ -4,12 +4,16 @@
   },
   "home": {
     "title": "Dashboard",
-    "types": {
+    "count": {
       "admin": "Admins",
       "teacher": "Teachers",
       "parent": "Parents",
       "student": "Students",
-      "unknown": "Unknowns"
+      "unknown": "Unknowns",
+      "class": "Classes",
+      "grade": "Grades",
+      "sector": "Sectors",
+      "subject": "Subjects"
     }
   },
   "users": {

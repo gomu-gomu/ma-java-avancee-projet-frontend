@@ -21,20 +21,20 @@ export default eventHandler(async (event) => {
         data = await ApiHelper.request<TResponse<{ users: Array<TUser> }>>(path, { queryParams, body: { jwt } });
         response.admins = data._embedded.users.length;
 
-        path = ['teachers'];
-        data = await ApiHelper.request<TResponse<{ teachers: Array<any> }>>(path, { body: { jwt } });
-        response.teachers = data.page.totalElements;
+        const targets = [
+          'teachers', 'parents', 'students', 
+          'classes', 'subjects', 'sectors',
+          'grades', 'cycles', 'sectors'
+        ];
 
-        path = ['parents'];
-        data = await ApiHelper.request<TResponse<{ parents: Array<any> }>>(path, { body: { jwt } });
-        response.parents = data.page.totalElements;
-
-        path = ['students'];
-        data = await ApiHelper.request<TResponse<{ students: Array<any> }>>(path, { body: { jwt } });
-        response.students = data.page.totalElements;
+        for (const target of targets) {
+          data = await ApiHelper.request<TResponse<any>>([target], { body: { jwt } });
+          response[target] = data.page.totalElements;
+        }
 
         return response;
       } catch (err) {
+        console.log({ err })
         return false;
       }
     }

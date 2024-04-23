@@ -9,7 +9,11 @@
       "teacher": "معلمون",
       "parent": "آباء",
       "student": "طلاب",
-      "unknown": "مجهولة"
+      "unknown": "مجهولة",
+      "class": "الفصول الدراسية",
+      "grade": "المستويات",
+      "sector": "الشعب",
+      "subject": "المواد"
     }
   },
   "users": {

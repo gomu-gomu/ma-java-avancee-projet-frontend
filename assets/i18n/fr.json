@@ -4,12 +4,16 @@
   },
   "home": {
     "title": "Tableau de bord",
-    "types": {
+    "count": {
       "admin": "Administrateurs",
       "teacher": "Professeurs",
       "parent": "Parents",
       "student": "Étudiants",
-      "unknown": "Inconnus"
+      "unknown": "Inconnus",
+      "class": "Classes",
+      "grade": "Niveaux",
+      "sector": "Filière",
+      "subject": "Matières"
     }
   },
   "users": {
