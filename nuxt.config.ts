@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@nuxt/fonts', '@vueuse/nuxt', '@nuxtjs/i18n', '@pinia/nuxt', '@pinia-plugin-persistedstate/nuxt'],
   spaLoadingTemplate: '~/assets/pages/loading.html',
   ui: {
-    icons: ['heroicons', 'simple-icons'],
+    icons: ['heroicons', 'clarity', 'ph', 'ri', 'simple-icons'],
     safelistColors: ['primary', 'red', 'orange', 'green']
   },
   devtools: {
