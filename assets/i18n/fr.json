@@ -14,6 +14,9 @@
       "grade": "Niveaux",
       "sector": "Filière",
       "subject": "Matières"
+    },
+    "cycleSuccess": {
+      "title": "Taux de réussite par année scolaire"
     }
   },
   "users": {

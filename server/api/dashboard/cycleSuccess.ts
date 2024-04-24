@@ -8,7 +8,7 @@ export default eventHandler(async (event) => {
     case ApiMethod.Post: {
       try {
         const { jwt } = await readBody<{ jwt: string }>(event);
-        const path = ['dashboard', 'count'];
+        const path = ['dashboard', 'cycleSuccess'];
         const params = { method: ApiMethod.Get, body: { jwt } };
 
         const data = await ApiHelper.request(path, params);

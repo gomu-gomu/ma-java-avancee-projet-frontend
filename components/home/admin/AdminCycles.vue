@@ -1,7 +1,28 @@
 <script setup lang="ts">
-import { eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval, format } from 'date-fns'
-import { VisXYContainer, VisLine, VisAxis, VisArea, VisCrosshair, VisTooltip } from '@unovis/vue'
-import type { Period, Range } from '~/types'
+import { eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval, format } from 'date-fns';
+import { VisXYContainer, VisLine, VisAxis, VisArea, VisCrosshair, VisTooltip } from '@unovis/vue';
+
+import { RequestHelper } from '~/core/helpers/request.helper';
+
+import type { Period, Range } from '~/types';
+import type { TNullable } from '~/types/nullable';
+import type { TCycleSuccess } from '~/types/cycleSuccess';
+
+
+
+const { t } = useI18n();
+const cycleRange = ref('');
+
+function getCycleRange(data: TNullable<Array<TCycleSuccess>>) {
+  if (data) {
+    const firstCycle = data[0].cycleYear;
+    const lastCycle = data.slice(0).reverse()[0].cycleYear;
+
+    return `${firstCycle}/${lastCycle}`;
+  }
+
+  return '---';
+};
 
 const cardRef = ref<HTMLElement | null>(null)
 
@@ -63,7 +84,14 @@ const xTicks = (i: number) => {
   return formatDate(data.value[i].date)
 }
 
-const template = (d: DataRecord) => `${formatDate(d.date)}: ${formatNumber(d.amount)}`
+const template = (d: DataRecord) => `${formatDate(d.date)}: ${formatNumber(d.amount)}`;
+
+onMounted(async () => {
+  const response = await RequestHelper.fetch<Array<TCycleSuccess>>('dashboard/cycleSuccess');
+
+  console.log({ data: response.data });
+  cycleRange.value = getCycleRange(response.data.value);
+});
 </script>
 
 <template>
@@ -71,10 +99,10 @@ const template = (d: DataRecord) => `${formatDate(d.date)}: ${formatNumber(d.amo
     <template #header>
       <div>
         <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-1">
-          Revenue
+          {{ t('home.cycleSuccess.title') }}
         </p>
         <p class="text-3xl text-gray-900 dark:text-white font-semibold">
-          {{ formatNumber(total) }}
+          {{ cycleRange }}
         </p>
       </div>
     </template>
