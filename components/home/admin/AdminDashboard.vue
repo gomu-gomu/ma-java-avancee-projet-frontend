@@ -15,7 +15,7 @@ const { t } = useI18n();
 const period = ref<Period>('daily');
 const range = ref<Range>({ start: sub(new Date(), { days: 14 }), end: new Date() });
 
-const { data } = await RequestHelper.fetch('count');
+const { data } = await RequestHelper.fetch('dashboard/count');
 
 function getCountLabel(type: string) {
   const key = type.endsWith('s') ? `${type}es` : `${type}s`;
