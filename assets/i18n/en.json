@@ -17,6 +17,10 @@
     },
     "cycleSuccess": {
       "title": "Success rates per cycle"
+    },
+    "topGlobalStudents": {
+      "title": "Top Students",
+      "description": "The {max} top students in {cycle}"
     }
   },
   "users": {

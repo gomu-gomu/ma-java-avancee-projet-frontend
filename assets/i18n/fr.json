@@ -17,6 +17,10 @@
     },
     "cycleSuccess": {
       "title": "Taux de réussite par année scolaire"
+    },
+    "topGlobalStudents": {
+      "title": "Meilleurs étudiants",
+      "description": "Les {max} meilleurs élèves du {cycle}"
     }
   },
   "users": {

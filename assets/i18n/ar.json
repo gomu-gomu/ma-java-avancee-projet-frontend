@@ -4,7 +4,7 @@
   },
   "home": {
     "title": "الصفحة الرئيسية",
-    "types": {
+    "count": {
       "admin": "مدراء",
       "teacher": "معلمون",
       "parent": "آباء",
@@ -17,6 +17,10 @@
     },
     "cycleSuccess": {
       "title": "معدل النجاح لكل عام دراسي"
+    },
+    "topGlobalStudents": {
+      "title": "الطلاب المتفوقين",
+      "description": "أفضل {max} طلاب في {cycle}"
     }
   },
   "users": {

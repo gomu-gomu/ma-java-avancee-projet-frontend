@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import AdminCycles from '~/components/home/admin/AdminCycles.vue';
+import AdminTopStudents from '~/components/home/admin/AdminTopStudents.vue';
 
 import { sub } from 'date-fns';
 import { UserType } from '~/core/enums/user-type.enum';
@@ -24,13 +25,6 @@ function getCountLabel(type: string) {
 </script>
 
 <template>
-  <!-- <UDashboardToolbar>
-    <template #left>
-      <HomeDateRangePicker v-model="range" class="-ml-2.5" />
-      <HomePeriodSelect v-model="period" :range="range" />
-    </template>
-</UDashboardToolbar> -->
-
   <div class="grid lg:grid-cols-3 lg:items-start gap-4">
     <AdminCycles :period="period" :range="range" class="col-span-2" />
 
@@ -54,7 +48,7 @@ function getCountLabel(type: string) {
   </div>
 
   <div class="grid lg:grid-cols-2 lg:items-start gap-4 mt-4">
-    <HomeSales />
+    <AdminTopStudents />
     <HomeCountries />
   </div>
 </template>
