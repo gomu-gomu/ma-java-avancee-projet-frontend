@@ -11,8 +11,7 @@ import type { TCycleSuccess } from '~/types/cycleSuccess';
 
 const { t } = useI18n();
 
-const cardRef = ref<HTMLElement | null>(null);
-const { width } = useElementSize(cardRef);
+const cardRef = ref<TNullable<HTMLElement>>(null);
 
 const { data } = await RequestHelper.fetch<Array<TCycleSuccess>>('dashboard/cycleSuccess');
 const cycleRange = getCycleRange(data.value);
@@ -45,6 +44,19 @@ function getCycleRange(data: TNullable<Array<TCycleSuccess>>) {
 
   return '---';
 };
+
+function getColor(d: TCycleSuccess): string {
+  const successRate = d.successPercentage;
+  if (successRate >= 70) {
+    return '#43de86';
+  } else if (successRate >= 60) {
+    return '#e0cb43';
+  } else if (successRate >= 50) {
+    return '#e08d43';
+  } else {
+    return '#e04343';
+  }
+}
 </script>
 
 <template>
@@ -60,17 +72,19 @@ function getCycleRange(data: TNullable<Array<TCycleSuccess>>) {
       </div>
     </template>
 
-    <VisXYContainer :data="data" :padding="{ top: 10 }" :yDomain="[0, 100]" class="h-96" :width="width">
-      <VisStackedBar :x="x" :y="y" color="primary" />
-      <VisTooltip :triggers="triggers" />
+    <div class="chart">
+      <VisXYContainer :data="data" :padding="{ top: 10 }" :yDomain="[0, 100]" class="h-96">
+        <VisTooltip :triggers="triggers" />
+        <VisStackedBar :x="x" :y="y" :color="getColor" :bar-width="60" />
 
-      <VisAxis type="x" :tick-format="xTicks" />
-      <VisAxis type="y" :tick-format="xTicks" />
-    </VisXYContainer>
+        <VisAxis type="x" :tick-format="xTicks" />
+        <VisAxis type="y" :tick-format="xTicks" />
+      </VisXYContainer>
+    </div>
   </UDashboardCard>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .unovis-xy-container {
   --vis-crosshair-line-stroke-color: rgb(var(--color-primary-500));
   --vis-crosshair-circle-stroke-color: #fff;
@@ -82,6 +96,10 @@ function getCycleRange(data: TNullable<Array<TCycleSuccess>>) {
   --vis-tooltip-background-color: #fff;
   --vis-tooltip-border-color: rgb(var(--color-gray-200));
   --vis-tooltip-text-color: rgb(var(--color-gray-900));
+}
+
+.chart {
+  padding: 0 20px;
 }
 
 .dark {
