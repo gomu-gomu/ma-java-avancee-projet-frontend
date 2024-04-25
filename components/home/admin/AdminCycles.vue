@@ -1,17 +1,39 @@
 <script setup lang="ts">
-import { eachDayOfInterval, eachWeekOfInterval, eachMonthOfInterval, format } from 'date-fns';
-import { VisXYContainer, VisLine, VisAxis, VisArea, VisCrosshair, VisTooltip } from '@unovis/vue';
+import { StackedBar } from '@unovis/ts';
+import { VisXYContainer, VisStackedBar, VisAxis, VisTooltip } from '@unovis/vue';
 
 import { RequestHelper } from '~/core/helpers/request.helper';
 
-import type { Period, Range } from '~/types';
 import type { TNullable } from '~/types/nullable';
 import type { TCycleSuccess } from '~/types/cycleSuccess';
 
 
 
 const { t } = useI18n();
-const cycleRange = ref('');
+
+const cardRef = ref<HTMLElement | null>(null);
+const { width } = useElementSize(cardRef);
+
+const { data } = await RequestHelper.fetch<Array<TCycleSuccess>>('dashboard/cycleSuccess');
+const cycleRange = getCycleRange(data.value);
+
+const triggers = {
+  [StackedBar.selectors.bar]: (d: TCycleSuccess) => `${d.cycleYear}: ${d.successPercentage}%`
+}
+
+const x = (d: TCycleSuccess) => d.cycleYear;
+const y = (d: TCycleSuccess) => d.successPercentage;
+const template = (d: TCycleSuccess) => `${d.cycleYear}: ${d.successPercentage}%`;
+
+const xTicks = (i: number) => {
+  const value = data.value;
+
+  if (value == null) {
+    return '';
+  }
+
+  return value[i]?.cycleYear;
+}
 
 function getCycleRange(data: TNullable<Array<TCycleSuccess>>) {
   if (data) {
@@ -23,75 +45,6 @@ function getCycleRange(data: TNullable<Array<TCycleSuccess>>) {
 
   return '---';
 };
-
-const cardRef = ref<HTMLElement | null>(null)
-
-const props = defineProps({
-  period: {
-    type: String as PropType<Period>,
-    required: true
-  },
-  range: {
-    type: Object as PropType<Range>,
-    required: true
-  }
-})
-
-type DataRecord = {
-  date: Date
-  amount: number
-}
-
-const { width } = useElementSize(cardRef)
-
-// We use `useAsyncData` here to have same random data on the client and server
-const { data } = await useAsyncData<DataRecord[]>(async () => {
-  const dates = ({
-    daily: eachDayOfInterval,
-    weekly: eachWeekOfInterval,
-    monthly: eachMonthOfInterval
-  })[props.period](props.range)
-
-  const min = 1000
-  const max = 10000
-
-  return dates.map((date) => ({ date, amount: Math.floor(Math.random() * (max - min + 1)) + min }))
-}, {
-  watch: [() => props.period, () => props.range],
-  default: () => []
-})
-
-const x = (_: DataRecord, i: number) => i
-const y = (d: DataRecord) => d.amount
-
-const total = computed(() => data.value.reduce((acc: number, { amount }) => acc + amount, 0))
-
-const formatNumber = new Intl.NumberFormat('en', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format
-
-const formatDate = (date: Date): string => {
-  return ({
-    daily: format(date, 'd MMM'),
-    weekly: format(date, 'd MMM'),
-    monthly: format(date, 'MMM yyy')
-  })[props.period]
-}
-
-const xTicks = (i: number) => {
-  if (i === 0 || i === data.value.length - 1 || !data.value[i]) {
-    return ''
-  }
-
-  return formatDate(data.value[i].date)
-}
-
-const template = (d: DataRecord) => `${formatDate(d.date)}: ${formatNumber(d.amount)}`;
-
-onMounted(async () => {
-  const response = await RequestHelper.fetch<Array<TCycleSuccess>>('dashboard/cycleSuccess');
-
-  console.log({ data: response.data });
-  cycleRange.value = getCycleRange(response.data.value);
-});
 </script>
 
 <template>
@@ -107,15 +60,12 @@ onMounted(async () => {
       </div>
     </template>
 
-    <VisXYContainer :data="data" :padding="{ top: 10 }" class="h-96" :width="width">
-      <VisLine :x="x" :y="y" color="rgb(var(--color-primary-DEFAULT))" />
-      <VisArea :x="x" :y="y" color="rgb(var(--color-primary-DEFAULT))" :opacity="0.1" />
+    <VisXYContainer :data="data" :padding="{ top: 10 }" :yDomain="[0, 100]" class="h-96" :width="width">
+      <VisStackedBar :x="x" :y="y" color="primary" />
+      <VisTooltip :triggers="triggers" />
 
-      <VisAxis type="x" :x="x" :tick-format="xTicks" />
-
-      <VisCrosshair color="rgb(var(--color-primary-DEFAULT))" :template="template" />
-
-      <VisTooltip />
+      <VisAxis type="x" :tick-format="xTicks" />
+      <VisAxis type="y" :tick-format="xTicks" />
     </VisXYContainer>
   </UDashboardCard>
 </template>
