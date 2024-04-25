@@ -1,6 +1,6 @@
 import { createAvatar } from '@dicebear/core';
 import type { Link } from '@nuxt/ui-pro/types';
-import { identicon } from '@dicebear/collection';
+import { thumbs } from '@dicebear/collection';
 
 import { Page } from '../enums/page.enum';
 import { pages } from '../consts/pages.enum';
@@ -12,7 +12,7 @@ import { useAuthStore } from '~/store/auth.store';
 
 export class UserHelper {
   public static generateAvatar(seed: string): string {
-    const avatar = createAvatar(identicon, { seed });
+    const avatar = createAvatar(thumbs, { seed });
     return avatar.toDataUriSync();
   }
 
