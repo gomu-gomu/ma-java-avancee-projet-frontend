@@ -4,7 +4,7 @@ import type { TBestStudentsResponse } from '~/types/bestStudent';
 
 
 
-const MAX = 5;
+const MAX = 7;
 
 const { t } = useI18n();
 

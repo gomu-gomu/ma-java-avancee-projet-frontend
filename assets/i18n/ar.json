@@ -21,6 +21,10 @@
     "topGlobalStudents": {
       "title": "الطلاب المتفوقين",
       "description": "أفضل {max} طلاب في {cycle}"
+    },
+    "topGlobalClasses": {
+      "title": "أفضل الاقسام",
+      "description": "أفضل {max} اقسام في {cycle} مع أعلى معدلات النجاح"
     }
   },
   "users": {

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import AdminCycles from '~/components/home/admin/AdminCycles.vue';
+import AdminTopClasses from '~/components/home/admin/AdminTopClasses.vue';
 import AdminTopStudents from '~/components/home/admin/AdminTopStudents.vue';
 
 import { sub } from 'date-fns';
@@ -49,6 +50,6 @@ function getCountLabel(type: string) {
 
   <div class="grid lg:grid-cols-2 lg:items-start gap-4 mt-4">
     <AdminTopStudents />
-    <HomeCountries />
+    <AdminTopClasses />
   </div>
 </template>

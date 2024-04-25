@@ -20,7 +20,11 @@
     },
     "topGlobalStudents": {
       "title": "Meilleurs étudiants",
-      "description": "Les {max} meilleurs élèves du {cycle}"
+      "description": "Les meilleurs {max} élèves du {cycle}"
+    },
+    "topGlobalClasses": {
+      "title": "Meilleures classes",
+      "description": "Les meilleures {max} classes du {cycle} avec les taux de réussite les plus élevés"
     }
   },
   "users": {
