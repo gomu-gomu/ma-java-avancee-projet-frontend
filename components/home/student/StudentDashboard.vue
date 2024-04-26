@@ -1,0 +1,3 @@
+<template>
+  Student dashboard
+</template>
