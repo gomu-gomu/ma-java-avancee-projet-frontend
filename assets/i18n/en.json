@@ -35,6 +35,13 @@
       "phone": "Phone",
       "cin": "CIN",
       "cne": "CNE"
+    },
+    "info": {
+      "title": "Info",
+      "class": "Class",
+      "grade": "Grade",
+      "sector": "Sector",
+      "cycle": "School year"
     }
   },
   "users": {

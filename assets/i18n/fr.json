@@ -35,6 +35,13 @@
       "phone": "Téléphone",
       "cin": "CIN",
       "cne": "CNE"
+    },
+    "info": {
+      "title": "Information",
+      "class": "Classe",
+      "grade": "Niveau scolaire",
+      "sector": "Filière",
+      "cycle": "Année scolaire"
     }
   },
   "users": {

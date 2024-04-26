@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import StudentInfo from '~/components/home/student/StudentInfo.vue';
 import CommonProfile from '~/components/home/common/CommonProfile.vue';
 </script>
 
@@ -10,6 +11,7 @@ import CommonProfile from '~/components/home/common/CommonProfile.vue';
 
     <div class="col-span-1 grid lg:grid-cols-1 lg:items-start gap-4">
       <CommonProfile />
+      <StudentInfo />
     </div>
   </div>
 </template>
