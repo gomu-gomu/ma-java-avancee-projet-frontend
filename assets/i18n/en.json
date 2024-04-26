@@ -26,6 +26,15 @@
     "topGlobalClasses": {
       "title": "Top Classes",
       "description": "The top {max} classes in {cycle} with the heighest success rates"
+    },
+    "profile": {
+      "title": "Profile",
+      "email": "Email",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "cin": "CIN",
+      "cne": "CNE"
     }
   },
   "users": {

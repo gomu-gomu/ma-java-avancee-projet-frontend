@@ -26,6 +26,15 @@
     "topGlobalClasses": {
       "title": "Meilleures classes",
       "description": "Les meilleures {max} classes du {cycle} avec les taux de réussite les plus élevés"
+    },
+    "profile": {
+      "title": "Profile",
+      "email": "E-mail",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "phone": "Téléphone",
+      "cin": "CIN",
+      "cne": "CNE"
     }
   },
   "users": {

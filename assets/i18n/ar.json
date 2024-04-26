@@ -26,6 +26,15 @@
     "topGlobalClasses": {
       "title": "أفضل الاقسام",
       "description": "أفضل {max} اقسام في {cycle} مع أعلى معدلات النجاح"
+    },
+    "profile": {
+      "title": "حساب",
+      "email": "البريد الإلكتروني",
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "phone": "الهاتف",
+      "cin": "CIN",
+      "cne": "CNE"
     }
   },
   "users": {
