@@ -1,6 +1,7 @@
 {
   "common": {
-    "search": "Recherche"
+    "search": "Recherche",
+    "cycleYear": "Année scolaire"
   },
   "home": {
     "title": "Tableau de bord",

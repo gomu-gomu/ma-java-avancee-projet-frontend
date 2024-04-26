@@ -1,6 +1,7 @@
 {
   "common": {
-    "search": "بحث"
+    "search": "بحث",
+    "cycleYear": "العام الدراسي"
   },
   "home": {
     "title": "الصفحة الرئيسية",

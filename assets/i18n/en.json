@@ -1,6 +1,7 @@
 {
   "common": {
-    "search": "Search"
+    "search": "Search",
+    "cycleYear": "School year"
   },
   "home": {
     "title": "Dashboard",
