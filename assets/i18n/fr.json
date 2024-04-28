@@ -42,6 +42,9 @@
       "grade": "Niveau scolaire",
       "sector": "Filière",
       "cycle": "Année scolaire"
+    },
+    "studentScores": {
+      "title": "Note par matière"
     }
   },
   "users": {

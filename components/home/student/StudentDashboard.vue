@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import StudentInfo from '~/components/home/student/StudentInfo.vue';
 import CommonProfile from '~/components/home/common/CommonProfile.vue';
+import StudentScores from '~/components/home/student/StudentScores.vue';
 </script>
 
 <template>
   <div class="grid lg:grid-cols-3 lg:items-start gap-4">
     <div class="col-span-2">
-      ...
+      <StudentScores />
     </div>
 
     <div class="col-span-1 grid lg:grid-cols-1 lg:items-start gap-4">

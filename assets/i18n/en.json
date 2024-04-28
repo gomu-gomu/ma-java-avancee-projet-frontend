@@ -42,6 +42,9 @@
       "grade": "Grade",
       "sector": "Sector",
       "cycle": "School year"
+    },
+    "studentScores": {
+      "title": "Score per subject"
     }
   },
   "users": {

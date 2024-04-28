@@ -5,7 +5,7 @@ import { VisXYContainer, VisStackedBar, VisAxis, VisTooltip } from '@unovis/vue'
 import { RequestHelper } from '~/core/helpers/request.helper';
 
 import type { TNullable } from '~/types/nullable';
-import type { TCycleSuccess } from '~/types/cycleSuccess';
+import type { TStudentScore } from '~/types/studentScore';
 
 
 
@@ -13,15 +13,15 @@ const { t } = useI18n();
 
 const cardRef = ref<TNullable<HTMLElement>>(null);
 
-const { data } = await RequestHelper.fetch<Array<TCycleSuccess>>('dashboard/cycleSuccess');
+const { data } = await RequestHelper.fetch<Array<TStudentScore>>('dashboard/studentScores');
 const cycleRange = getCycleRange(data.value);
 
 const triggers = {
-  [StackedBar.selectors.bar]: (d: TCycleSuccess) => `${d.cycleYear}: ${d.successPercentage}%`
+  [StackedBar.selectors.bar]: (d: TStudentScore) => `${d.subject}: ${d.score}/20`
 }
 
-const x = (d: TCycleSuccess) => d.cycleYear;
-const y = (d: TCycleSuccess) => d.successPercentage;
+const y = (d: TStudentScore) => d.score;
+const x = (_: TStudentScore, i: number) => i;
 
 const xTicks = (i: number) => {
   const value = data.value;
@@ -30,27 +30,30 @@ const xTicks = (i: number) => {
     return '';
   }
 
-  return value[i]?.cycleYear;
+  return value[i]?.subject;
 }
 
-function getCycleRange(data: TNullable<Array<TCycleSuccess>>) {
-  if (data) {
-    const firstCycle = data[0].cycleYear;
-    const lastCycle = data.slice(0).reverse()[0].cycleYear;
+const yTicks = (i: number) => {
+  return i;
+}
 
-    return `${firstCycle}/${lastCycle}`;
+function getCycleRange(data: TNullable<Array<TStudentScore>>) {
+  if (data) {
+    const year = data[0].year;
+    return `${year}/${year + 1}`;
   }
 
   return '---';
 };
 
-function getColor(d: TCycleSuccess): string {
-  const successRate = d.successPercentage;
-  if (successRate >= 70) {
+function getColor(d: TStudentScore): string {
+  const successRate = d.score;
+
+  if (successRate >= 17) {
     return '#43de86';
-  } else if (successRate >= 60) {
+  } else if (successRate >= 15) {
     return '#e0cb43';
-  } else if (successRate >= 50) {
+  } else if (successRate >= 10) {
     return '#e08d43';
   } else {
     return '#e04343';
@@ -63,7 +66,7 @@ function getColor(d: TCycleSuccess): string {
     <template #header>
       <div>
         <p class="text-sm text-gray-500 dark:text-gray-400 font-medium mb-1">
-          {{ t('home.cycleSuccess.title') }}
+          {{ t('home.studentScores.title') }}
         </p>
         <p class="text-3xl text-gray-900 dark:text-white font-semibold">
           {{ cycleRange }}
@@ -72,12 +75,12 @@ function getColor(d: TCycleSuccess): string {
     </template>
 
     <div class="chart">
-      <VisXYContainer :data="data" :padding="{ top: 10 }" :yDomain="[0, 100]" class="h-96">
+      <VisXYContainer :data="data" :padding="{ top: 10 }" :yDomain="[0, 20]" class="h-96">
         <VisTooltip :triggers="triggers" />
-        <VisStackedBar :x="x" :y="y" :color="getColor" :bar-width="60" />
+        <VisStackedBar :x="x" :y="y" :color="getColor" />
 
         <VisAxis type="x" :tick-format="xTicks" />
-        <VisAxis type="y" :tick-format="xTicks" />
+        <VisAxis type="y" :tick-format="yTicks" />
       </VisXYContainer>
     </div>
   </UDashboardCard>
