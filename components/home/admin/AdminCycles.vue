@@ -33,6 +33,10 @@ const xTicks = (i: number) => {
   return value[i]?.cycleYear;
 }
 
+const yTicks = (i: number) => {
+  return i;
+}
+
 function getCycleRange(data: TNullable<Array<TCycleSuccess>>) {
   if (data) {
     const firstCycle = data[0].cycleYear;
@@ -77,7 +81,7 @@ function getColor(d: TCycleSuccess): string {
         <VisStackedBar :x="x" :y="y" :color="getColor" :bar-width="60" />
 
         <VisAxis type="x" :tick-format="xTicks" />
-        <VisAxis type="y" :tick-format="xTicks" />
+        <VisAxis type="y" :tick-format="yTicks" />
       </VisXYContainer>
     </div>
   </UDashboardCard>
